@@ -1,0 +1,15 @@
+{
+  "project": "my-project",
+  "repoPath": "C:/path/to/project",
+  "mainConfigPath": "src/cf",
+  "extensionPath": "src/cfe",
+  "extensionRequired": false,
+  "outputPath": "C:/path/to/output/metadata",
+  "reportFileName": "Report.txt",
+  "diagnosticsPath": "C:/path/to/output/diagnostics",
+  "logsPath": "C:/path/to/output/logs",
+  "encoding": "utf-8",
+  "warningsAsErrors": false,
+  "buildXmlOverrides": true,
+  "generatorSettingsPath": "C:/path/to/repo/generate_config_report/settings/generated/my-project.xml-overrides.json"
+}

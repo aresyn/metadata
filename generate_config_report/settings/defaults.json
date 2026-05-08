@@ -1,0 +1,2945 @@
+{
+  "supportedEncodings": [
+    "utf-8",
+    "utf-8-sig",
+    "cp1251"
+  ],
+  "reportFormat": {
+    "baseIndent": 1,
+    "indent": "\t",
+    "lineEnding": "\n",
+    "blankLineBetweenRootSections": true
+  },
+  "xmlStructure": {
+    "configurationFileName": "Configuration.xml",
+    "metadataObjectWrapper": "MetaDataObject",
+    "propertiesElementNames": [
+      "Properties",
+      "Свойства"
+    ],
+    "childObjectsElementNames": [
+      "ChildObjects"
+    ],
+    "internalInfoElementNames": [
+      "InternalInfo"
+    ],
+    "localizedContentElementName": "content",
+    "specialNestedObjectFiles": [
+      "Form.xml",
+      "Template.xml",
+      "Command.xml"
+    ]
+  },
+  "rootObject": {
+    "reportPlural": "Конфигурации",
+    "typeKey": "configuration"
+  },
+  "rootSourcePropertyOverrides": {
+    "main": {
+      "РежимСовместимостиРасширенияКонфигурации": "НеИспользовать"
+    }
+  },
+  "commonProperties": [
+    "Имя",
+    "Синоним",
+    "Комментарий",
+    "ПринадлежностьОбъекта",
+    "ОбъектРасширяемойКонфигурации"
+  ],
+  "propertyAliases": {
+    "Имя": [
+      "Name",
+      "name",
+      "Имя"
+    ],
+    "Синоним": [
+      "Synonym",
+      "synonym",
+      "Синоним"
+    ],
+    "Комментарий": [
+      "Comment",
+      "Комментарий"
+    ],
+    "Наименование": [
+      "Description"
+    ],
+    "ПринадлежностьОбъекта": [
+      "ObjectBelonging",
+      "ObjectBelongingToConfiguration",
+      "ПринадлежностьОбъекта"
+    ],
+    "ОбъектРасширяемойКонфигурации": [
+      "ExtendedConfigurationObject",
+      "ОбъектРасширяемойКонфигурации"
+    ],
+    "ПоддерживатьСоответствиеОбъектамРасширяемойКонфигурацииПоВнутреннимИдентификаторам": [
+      "KeepMappingToExtendedConfigurationObjectsByIDs"
+    ],
+    "ПрефиксИмен": [
+      "NamePrefix",
+      "ПрефиксИмен"
+    ],
+    "РежимСовместимостиРасширенияКонфигурации": [
+      "ExtensionCompatibilityMode",
+      "ConfigurationExtensionCompatibilityMode"
+    ],
+    "ОсновнойРежимЗапуска": [
+      "DefaultRunMode"
+    ],
+    "НазначенияИспользования": [
+      "UsePurposes"
+    ],
+    "ВариантВстроенногоЯзыка": [
+      "ScriptVariant"
+    ],
+    "ОсновныеРоли": [
+      "DefaultRoles",
+      "Roles"
+    ],
+    "Поставщик": [
+      "Vendor"
+    ],
+    "Версия": [
+      "Version"
+    ],
+    "АдресКаталогаОбновлений": [
+      "UpdateCatalogAddress"
+    ],
+    "ОсновнойЯзык": [
+      "DefaultLanguage"
+    ],
+    "РежимУправленияБлокировкойДанных": [
+      "DataLockControlMode"
+    ],
+    "РежимСовместимости": [
+      "CompatibilityMode"
+    ],
+    "ОсновнаяФормаКонстант": [
+      "DefaultConstantsForm"
+    ],
+    "ИспользоватьУправляемыеФормыВОбычномПриложении": [
+      "UseManagedFormInOrdinaryApplication"
+    ],
+    "ИспользоватьОбычныеФормыВУправляемомПриложении": [
+      "UseOrdinaryFormInManagedApplication"
+    ],
+    "ДополнительныеСловариПолнотекстовогоПоиска": [
+      "AdditionalFullTextSearchDictionaries"
+    ],
+    "ХранилищеОбщихНастроек": [
+      "CommonSettingsStorage"
+    ],
+    "ХранилищеПользовательскихНастроекОтчетов": [
+      "ReportsUserSettingsStorage"
+    ],
+    "ХранилищеВариантовОтчетов": [
+      "ReportsVariantsStorage"
+    ],
+    "ХранилищеНастроекДанныхФорм": [
+      "FormDataSettingsStorage"
+    ],
+    "ХранилищеПользовательскихНастроекДинамическихСписков": [
+      "DynamicListsUserSettingsStorage"
+    ],
+    "ХранилищеВнешнихДанныхНавигационныхСсылок": [
+      "URLExternalDataStorage"
+    ],
+    "ОсновнаяФормаОтчета": [
+      "DefaultReportForm"
+    ],
+    "ОсновнаяФормаВариантаОтчета": [
+      "DefaultReportVariantForm"
+    ],
+    "ОсновнаяФормаНастроекОтчета": [
+      "DefaultReportSettingsForm"
+    ],
+    "ОсновнойМакетОформленияОтчета": [
+      "DefaultReportAppearanceTemplate"
+    ],
+    "ОсновнаяФормаНастроекДинамическогоСписка": [
+      "DefaultDynamicListSettingsForm"
+    ],
+    "ОсновнаяФормаПоиска": [
+      "DefaultSearchForm"
+    ],
+    "ОсновнаяФормаИсторииИзмененийИсторииДанных": [
+      "DefaultDataHistoryChangeHistoryForm"
+    ],
+    "ОсновнаяФормаДанныхВерсииИсторииДанных": [
+      "DefaultDataHistoryVersionDataForm"
+    ],
+    "ОсновнаяФормаРазличийВерсийИсторииДанных": [
+      "DefaultDataHistoryVersionDifferencesForm"
+    ],
+    "ОсновнаяФормаВыбораПользователейСистемыВзаимодействия": [
+      "DefaultCollaborationSystemUsersChoiceForm"
+    ],
+    "РолиОграниченияАвтономнойКонфигурации": [
+      "StandaloneConfigurationRestrictionRoles"
+    ],
+    "НавигационныеСсылкиМобильногоПриложения": [
+      "MobileApplicationURLs"
+    ],
+    "ДопустимыеТипыВходящихЗапросовПоделиться": [
+      "AllowedIncomingShareRequestTypes"
+    ],
+    "РежимОсновногоОкнаКлиентскогоПриложения": [
+      "MainClientApplicationWindowMode"
+    ],
+    "ОсновнойИнтерфейс": [
+      "DefaultInterface"
+    ],
+    "ОсновнойСтиль": [
+      "DefaultStyle"
+    ],
+    "КраткаяИнформация": [
+      "BriefInformation"
+    ],
+    "ПодробнаяИнформация": [
+      "DetailedInformation"
+    ],
+    "АвторскиеПрава": [
+      "Copyright"
+    ],
+    "АдресИнформацииОПоставщике": [
+      "VendorInformationAddress"
+    ],
+    "АдресИнформацииОКонфигурации": [
+      "ConfigurationInformationAddress"
+    ],
+    "РежимХранилищаДвоичныхДанных": [
+      "BinaryDataStorageMode"
+    ],
+    "РежимИспользованияБлочногоХраненияДвоичныхДанных": [
+      "BinaryDataSplitStorageUseMode"
+    ],
+    "РежимАвтонумерацииОбъектов": [
+      "ObjectAutonumerationMode"
+    ],
+    "РежимИспользованияМодальности": [
+      "ModalityUseMode"
+    ],
+    "РежимИспользованияСинхронныхВызововРасширенийПлатформыИВнешнихКомпонент": [
+      "SynchronousPlatformExtensionAndAddInCallUseMode"
+    ],
+    "РежимСовместимостиИнтерфейса": [
+      "InterfaceCompatibilityMode"
+    ],
+    "РежимИспользованияТабличныхПространствБазыДанных": [
+      "DatabaseTablespacesUseMode"
+    ],
+    "ИспользуемаяФункциональностьМобильногоПриложения": [
+      "UsedMobileApplicationFunctionalities"
+    ],
+    "ВключатьСправкуВСодержание": [
+      "IncludeHelpInContents"
+    ],
+    "ВключатьВКомандныйИнтерфейс": [
+      "IncludeInCommandInterface"
+    ],
+    "ИспользоватьОднуКоманду": [
+      "UseOneCommand"
+    ],
+    "Пояснение": [
+      "Explanation"
+    ],
+    "ПризнакУчета": [
+      "AccountingFlag"
+    ],
+    "ПризнакУчетаСубконто": [
+      "ExtDimensionAccountingFlag"
+    ],
+    "Картинка": [
+      "Picture"
+    ],
+    "Категория": [
+      "Category"
+    ],
+    "ТипФормы": [
+      "FormType"
+    ],
+    "Состав": [
+      "Content",
+      "SubsystemContent"
+    ],
+    "Ссылки": [
+      "References"
+    ],
+    "Глобальный": [
+      "Global"
+    ],
+    "КлиентУправляемоеПриложение": [
+      "ClientManagedApplication"
+    ],
+    "Сервер": [
+      "Server"
+    ],
+    "ВнешнееСоединение": [
+      "ExternalConnection"
+    ],
+    "КлиентОбычноеПриложение": [
+      "ClientOrdinaryApplication"
+    ],
+    "ВызовСервера": [
+      "ServerCall"
+    ],
+    "Привилегированный": [
+      "Privileged"
+    ],
+    "ПовторноеИспользованиеВозвращаемыхЗначений": [
+      "ReturnValuesReuse"
+    ],
+    "КодЯзыка": [
+      "LanguageCode"
+    ],
+    "ИспользоватьСтандартныеКоманды": [
+      "UseStandardCommands"
+    ],
+    "Нумератор": [
+      "Numerator"
+    ],
+    "ТипНомера": [
+      "NumberType"
+    ],
+    "ДлинаНомера": [
+      "NumberLength"
+    ],
+    "ДопустимаяДлинаНомера": [
+      "NumberAllowedLength"
+    ],
+    "ПериодичностьНомера": [
+      "NumberPeriodicity"
+    ],
+    "КонтрольУникальности": [
+      "CheckUnique"
+    ],
+    "Автонумерация": [
+      "Autonumbering"
+    ],
+    "СтандартныеРеквизиты": [
+      "StandardAttributes"
+    ],
+    "Характеристики": [
+      "Characteristics"
+    ],
+    "ВводитсяНаОсновании": [
+      "BasedOn"
+    ],
+    "ПланСчетов": [
+      "ChartOfAccounts"
+    ],
+    "Корреспонденция": [
+      "Correspondence"
+    ],
+    "ДлинаУточненияПериода": [
+      "PeriodAdjustmentLength"
+    ],
+    "ОсновнаяФормаОбъекта": [
+      "DefaultObjectForm"
+    ],
+    "ОсновнаяФормаГруппы": [
+      "DefaultFolderForm"
+    ],
+    "ОсновнаяФормаСписка": [
+      "DefaultListForm"
+    ],
+    "ОсновнаяФормаДляВыбора": [
+      "DefaultChoiceForm"
+    ],
+    "ОсновнаяФорма": [
+      "DefaultForm"
+    ],
+    "ДополнительнаяФорма": [
+      "AuxiliaryForm"
+    ],
+    "ДополнительнаяФормаОбъекта": [
+      "AuxiliaryObjectForm"
+    ],
+    "ДополнительнаяФормаГруппы": [
+      "AuxiliaryFolderForm"
+    ],
+    "ДополнительнаяФормаСписка": [
+      "AuxiliaryListForm"
+    ],
+    "ДополнительнаяФормаДляВыбора": [
+      "AuxiliaryChoiceForm"
+    ],
+    "ДополнительнаяФормаДляВыбораГруппы": [
+      "AuxiliaryFolderChoiceForm"
+    ],
+    "Проведение": [
+      "Posting"
+    ],
+    "ОперативноеПроведение": [
+      "RealTimePosting"
+    ],
+    "Иерархический": [
+      "Hierarchical"
+    ],
+    "ВидИерархии": [
+      "HierarchyType"
+    ],
+    "ОграничиватьКоличествоУровней": [
+      "LimitLevelCount"
+    ],
+    "КоличествоУровней": [
+      "LevelCount"
+    ],
+    "ГруппыСверху": [
+      "FoldersOnTop"
+    ],
+    "Владельцы": [
+      "Owners"
+    ],
+    "ИспользованиеПодчинения": [
+      "SubordinationUse"
+    ],
+    "ДлинаКода": [
+      "CodeLength"
+    ],
+    "СерииКодов": [
+      "CodeSeries"
+    ],
+    "МаскаКода": [
+      "CodeMask"
+    ],
+    "ДлинаНаименования": [
+      "DescriptionLength"
+    ],
+    "ТипКода": [
+      "CodeType"
+    ],
+    "ОсновноеПредставление": [
+      "DefaultPresentation"
+    ],
+    "ВидыСубконто": [
+      "ExtDimensionTypes"
+    ],
+    "МаксКоличествоСубконто": [
+      "MaxExtDimensionCount"
+    ],
+    "СпособРедактирования": [
+      "EditType"
+    ],
+    "ПолнотекстовыйПоиск": [
+      "FullTextSearch"
+    ],
+    "ИсторияДанных": [
+      "DataHistory"
+    ],
+    "ОбновлятьИсториюДанныхСразуПослеЗаписи": [
+      "UpdateDataHistoryImmediatelyAfterWrite"
+    ],
+    "ВыполнятьОбработкуПослеЗаписиВерсииИсторииДанных": [
+      "ExecuteAfterWriteDataHistoryVersionProcessing"
+    ],
+    "ПредставлениеОбъекта": [
+      "ObjectPresentation"
+    ],
+    "РасширенноеПредставлениеОбъекта": [
+      "ExtendedObjectPresentation"
+    ],
+    "ПредставлениеСписка": [
+      "ListPresentation"
+    ],
+    "РасширенноеПредставлениеСписка": [
+      "ExtendedListPresentation"
+    ],
+    "РасширенноеПредставление": [
+      "ExtendedPresentation"
+    ],
+    "ПериодичностьРегистраСведений": [
+      "InformationRegisterPeriodicity"
+    ],
+    "ДополнительнаяФормаЗаписи": [
+      "AuxiliaryRecordForm"
+    ],
+    "ОсновнойОтборПоПериоду": [
+      "MainFilterOnPeriod"
+    ],
+    "РасширенноеПредставлениеЗаписи": [
+      "ExtendedRecordPresentation"
+    ],
+    "РазрешитьИтогиСрезПоследних": [
+      "EnableTotalsSliceLast"
+    ],
+    "РазрешитьИтогиСрезПервых": [
+      "EnableTotalsSliceFirst"
+    ],
+    "ПредставлениеЗаписи": [
+      "RecordPresentation"
+    ],
+    "СпособВыбора": [
+      "ChoiceMode"
+    ],
+    "ТипМакета": [
+      "TemplateType"
+    ],
+    "Группа": [
+      "Group"
+    ],
+    "ТипПараметраКоманды": [
+      "CommandParameterType"
+    ],
+    "РежимИспользованияПараметра": [
+      "ParameterUseMode"
+    ],
+    "Отображение": [
+      "Representation"
+    ],
+    "ИзменяетДанные": [
+      "ModifiesData"
+    ],
+    "ПоведениеПриНедоступностиОсновногоСервера": [
+      "OnMainServerUnavalableBehavior",
+      "OnMainServerUnavailableBehavior"
+    ],
+    "СочетаниеКлавиш": [
+      "Shortcut"
+    ],
+    "ВводПоСтроке": [
+      "InputByString"
+    ],
+    "ПоляБлокировкиДанных": [
+      "DataLockFields"
+    ],
+    "ПолнотекстовыйПоискПриВводеПоСтроке": [
+      "FullTextSearchOnInputByString"
+    ],
+    "СпособПоискаСтрокиПриВводеПоСтроке": [
+      "SearchStringModeOnInputByString"
+    ],
+    "РежимПолученияДанныхВыбораПриВводеПоСтроке": [
+      "ChoiceDataGetModeOnInputByString"
+    ],
+    "ОсновнаяФормаДляВыбораГруппы": [
+      "DefaultFolderChoiceForm"
+    ],
+    "ОбновлениеПредопределенныхДанных": [
+      "PredefinedDataUpdate"
+    ],
+    "Описание": [
+      "Description"
+    ],
+    "КоличествоПовторовПриАварийномЗавершении": [
+      "RestartCountOnFailure"
+    ],
+    "Предопределенное": [
+      "Predefined"
+    ],
+    "ИмяМетода": [
+      "MethodName"
+    ],
+    "ИнтервалПовтораПриАварийномЗавершении": [
+      "RestartIntervalOnFailure"
+    ],
+    "Ключ": [
+      "Key"
+    ],
+    "Хранение": [
+      "Location"
+    ],
+    "ПривилегированныйРежимПриПолучении": [
+      "PrivilegedGetMode"
+    ],
+    "ОсновнаяСхемаКомпоновкиДанных": [
+      "MainDataCompositionSchema"
+    ],
+    "ХранилищеНастроек": [
+      "SettingsStorage"
+    ],
+    "ХранилищеВариантов": [
+      "VariantsStorage"
+    ],
+    "ОсновнаяФормаВарианта": [
+      "DefaultVariantForm"
+    ],
+    "ДополнительнаяФормаНастроек": [
+      "AuxiliarySettingsForm"
+    ],
+    "ОсновнаяФормаНастроек": [
+      "DefaultSettingsForm"
+    ],
+    "Движения": [
+      "RegisterRecords"
+    ],
+    "УдалениеДвижений": [
+      "RegisterRecordsDeletion"
+    ],
+    "ЗаписьДвиженийПриПроведении": [
+      "RegisterRecordsWritingOnPost"
+    ],
+    "ЗаполнениеПоследовательностей": [
+      "SequenceFilling"
+    ],
+    "ПривилегированныйРежимПриПроведении": [
+      "PostInPrivilegedMode"
+    ],
+    "ПривилегированныйРежимПриОтменеПроведения": [
+      "UnpostInPrivilegedMode"
+    ],
+    "ИспользованиеВИтогах": [
+      "UseInTotals"
+    ],
+    "РазрешитьРазделениеИтогов": [
+      "EnableTotalsSplitting"
+    ],
+    "ВидРегистра": [
+      "RegisterType"
+    ],
+    "НазначениеРасширенияКонфигурации": [
+      "ConfigurationExtensionPurpose"
+    ],
+    "ВключатьРасширенияКонфигурации": [
+      "IncludeConfigurationExtensions"
+    ],
+    "РаспределеннаяИнформационнаяБаза": [
+      "DistributedInfoBase"
+    ],
+    "ЗапрещатьНезаполненныеЗначения": [
+      "DenyIncompleteValues"
+    ],
+    "Ведущее": [
+      "Master"
+    ],
+    "РежимСокращенияТипа": [
+      "TypeReductionMode"
+    ],
+    "ОсновнойОтбор": [
+      "MainFilter"
+    ],
+    "ДоступностьДляВыбора": [
+      "AvailabilityForChoice"
+    ],
+    "ДоступностьДляОформления": [
+      "AvailabilityForAppearance"
+    ],
+    "Тип": [
+      "Type"
+    ],
+    "Использование": [
+      "Use"
+    ],
+    "РежимПароля": [
+      "PasswordMode"
+    ],
+    "Формат": [
+      "Format"
+    ],
+    "ФорматРедактирования": [
+      "EditFormat"
+    ],
+    "Подсказка": [
+      "ToolTip"
+    ],
+    "ВыделятьОтрицательные": [
+      "MarkNegatives"
+    ],
+    "Маска": [
+      "Mask"
+    ],
+    "МногострочныйРежим": [
+      "MultiLine"
+    ],
+    "РасширенноеРедактирование": [
+      "ExtendedEdit"
+    ],
+    "ЗаполнятьИзДанныхЗаполнения": [
+      "FillFromFillingValue"
+    ],
+    "ПроверкаЗаполнения": [
+      "FillChecking"
+    ],
+    "ЗначениеЗаполнения": [
+      "FillValue"
+    ],
+    "ИспользованиеХраненияВХранилищеДвоичныхДанных": [
+      "BinaryDataStorageUse",
+      "BinaryDataStorageUseMode"
+    ],
+    "ПолеИспользованияХраненияВХранилищеДвоичныхДанных": [
+      "BinaryDataStorageUseField"
+    ],
+    "ВыборГруппИЭлементов": [
+      "ChoiceFoldersAndItems"
+    ],
+    "СвязиПараметровВыбора": [
+      "ChoiceParameterLinks"
+    ],
+    "ПараметрыВыбора": [
+      "ChoiceParameters"
+    ],
+    "БыстрыйВыбор": [
+      "QuickChoice"
+    ],
+    "СозданиеПриВводе": [
+      "CreateOnInput"
+    ],
+    "ФормаВыбора": [
+      "ChoiceForm"
+    ],
+    "ИсторияВыбораПриВводе": [
+      "ChoiceHistoryOnInput"
+    ],
+    "Индексирование": [
+      "Indexing"
+    ],
+    "ДлинаНомераСтроки": [
+      "LineNumberLength"
+    ],
+    "Периодичность": [
+      "Periodicity"
+    ],
+    "РежимЗаписи": [
+      "WriteMode"
+    ],
+    "ОсновнаяФормаЗаписи": [
+      "DefaultRecordForm"
+    ],
+    "Вид": [
+      "Type"
+    ],
+    "Значение": [
+      "Value"
+    ],
+    "Источник": [
+      "Source"
+    ],
+    "Событие": [
+      "Event"
+    ],
+    "Обработчик": [
+      "Handler"
+    ],
+    "ПространствоИмен": [
+      "Namespace"
+    ],
+    "ПакетыXDTO": [
+      "XDTOPackages"
+    ],
+    "ИмяФайлаПубликации": [
+      "DescriptorFileName"
+    ],
+    "ПовторноеИспользованиеСеансов": [
+      "ReuseSessions"
+    ],
+    "ВремяЖизниСеанса": [
+      "SessionMaxAge"
+    ],
+    "ТипВозвращаемогоЗначенияXDTO": [
+      "XDTOReturningValueType"
+    ],
+    "ТипЗначенияXDTO": [
+      "XDTOValueType"
+    ],
+    "ВозможноПустое": [
+      "Nillable"
+    ],
+    "ВТранзакции": [
+      "Transactioned"
+    ],
+    "ИмяПроцедуры": [
+      "ProcedureName"
+    ],
+    "НаправлениеПередачи": [
+      "TransferDirection"
+    ],
+    "КорневойURL": [
+      "RootURL"
+    ],
+    "Шаблон": [
+      "Template"
+    ],
+    "HTTPМетод": [
+      "HTTPMethod"
+    ],
+    "ДополнительныеЗначенияХарактеристик": [
+      "CharacteristicExtValues"
+    ],
+    "РегистрируемыеДокументы": [
+      "RegisteredDocuments"
+    ],
+    "АвтоИспользование": [
+      "AutoUse"
+    ],
+    "РазделениеДанных": [
+      "DataSeparation"
+    ],
+    "ИспользованиеРазделяемыхДанных": [
+      "SeparatedDataUse"
+    ],
+    "ЗначениеРазделенияДанных": [
+      "DataSeparationValue"
+    ],
+    "ИспользованиеРазделенияДанных": [
+      "DataSeparationUse"
+    ],
+    "УсловноеРазделение": [
+      "ConditionalSeparation"
+    ],
+    "РазделениеПользователей": [
+      "UsersSeparation"
+    ],
+    "РазделениеАутентификации": [
+      "AuthenticationSeparation"
+    ],
+    "РазделениеРасширенийКонфигурации": [
+      "ConfigurationExtensionsSeparation"
+    ],
+    "ОсновнаяФормаСохранения": [
+      "DefaultSaveForm"
+    ],
+    "ОсновнаяФормаЗагрузки": [
+      "DefaultLoadForm"
+    ],
+    "ДополнительнаяФормаСохранения": [
+      "AuxiliarySaveForm"
+    ],
+    "ДополнительнаяФормаЗагрузки": [
+      "AuxiliaryLoadForm"
+    ],
+    "АдресВнешнегоСервисаИнтеграции": [
+      "ExternalIntegrationServiceAddress"
+    ],
+    "ИмяКаналаВнешнегоСервисаИнтеграции": [
+      "ExternalIntegrationServiceChannelName"
+    ],
+    "НаправлениеСообщения": [
+      "MessageDirection"
+    ],
+    "ОбработкаПолученияСообщения": [
+      "ReceiveMessageProcessing"
+    ],
+    "НомерЗадачиАвтоПрефикс": [
+      "TaskNumberAutoPrefix"
+    ],
+    "Адресация": [
+      "Addressing"
+    ],
+    "ОсновнойРеквизитАдресации": [
+      "MainAddressingAttribute"
+    ],
+    "ТекущийИсполнитель": [
+      "CurrentPerformer"
+    ],
+    "СпособСозданияНаОсновании": [
+      "CreateBasedOn"
+    ],
+    "СозданиеЗадач": [
+      "TaskCreation"
+    ],
+    "ОсновнаяФормаТочкиМаршрута": [
+      "DefaultRoutePointForm"
+    ],
+    "ПривилегированныйРежимПриСозданииЗадач": [
+      "CreateTaskInPrivilegedMode"
+    ],
+    "Задача": [
+      "Task"
+    ],
+    "ИзмерениеАдресации": [
+      "AddressingDimension"
+    ],
+    "ДопустимаяДлинаКода": [
+      "CodeAllowedLength"
+    ]
+  },
+  "propertyDefaults": {
+    "Синоним": "",
+    "Комментарий": "",
+    "ПринадлежностьОбъекта": "Собственный",
+    "ОбъектРасширяемойКонфигурации": "",
+    "ПакетыXDTO": "",
+    "ИспользованиеХраненияВХранилищеДвоичныхДанных": "Использовать",
+    "ПолеИспользованияХраненияВХранилищеДвоичныхДанных": ""
+  },
+  "standardAttributeNameTranslations": {
+    "Ref": "Ссылка",
+    "DeletionMark": "ПометкаУдаления",
+    "Code": "Код",
+    "Description": "Наименование",
+    "PredefinedDataName": "ИмяПредопределенныхДанных",
+    "Parent": "Родитель",
+    "Owner": "Владелец",
+    "Folder": "ЭтоГруппа",
+    "Date": "Дата",
+    "Number": "Номер",
+    "Posted": "Проведен",
+    "Period": "Период",
+    "Recorder": "Регистратор",
+    "LineNumber": "НомерСтроки",
+    "Active": "Активность",
+    "Type": "Тип",
+    "Started": "Стартован",
+    "Completed": "Завершен",
+    "HeadTask": "ГлавнаяЗадача",
+    "LeadingTask": "ВедущаяЗадача",
+    "RoutePoint": "ТочкаМаршрута",
+    "Executed": "Выполнена",
+    "ExchangeDate": "ДатаОбмена",
+    "BusinessProcess": "БизнесПроцесс",
+    "ValueType": "ТипЗначения"
+  },
+  "standardAttributePropertyDefaults": {
+    "ПроверкаЗаполнения": "НеПроверять",
+    "МногострочныйРежим": "Ложь",
+    "ЗаполнятьИзДанныхЗаполнения": "Ложь",
+    "СозданиеПриВводе": "Авто",
+    "РежимСокращенияТипа": "TransformValues",
+    "РасширенноеРедактирование": "Ложь",
+    "БыстрыйВыбор": "Авто",
+    "ИсторияВыбораПриВводе": "Авто",
+    "РежимПароля": "Ложь",
+    "ИсторияДанных": "Использовать",
+    "ВыделятьОтрицательные": "Ложь",
+    "ПолнотекстовыйПоиск": "Использовать",
+    "ВыборГруппИЭлементов": "Элементы"
+  },
+  "standardAttributeKeepDefaultPropertiesByName": {},
+  "standardAttributeKeepDefaultOwnerAttributeProperties": [],
+  "standardAttributeSuppressedPropertiesByName": {
+    "Владелец": [
+      "ПроверкаЗаполнения",
+      "ЗаполнятьИзДанныхЗаполнения",
+      "РежимСокращенияТипа"
+    ],
+    "Родитель": [
+      "ЗаполнятьИзДанныхЗаполнения"
+    ],
+    "Наименование": [
+      "ПроверкаЗаполнения",
+      "ЗаполнятьИзДанныхЗаполнения",
+      "РежимСокращенияТипа"
+    ],
+    "Дата": [
+      "ПроверкаЗаполнения",
+      "ЗаполнятьИзДанныхЗаполнения",
+      "РежимСокращенияТипа"
+    ],
+    "Период": [
+      "ПроверкаЗаполнения",
+      "ЗаполнятьИзДанныхЗаполнения",
+      "РежимСокращенияТипа"
+    ],
+    "НомерСтроки": [
+      "ПроверкаЗаполнения",
+      "ЗаполнятьИзДанныхЗаполнения",
+      "РежимСокращенияТипа"
+    ]
+  },
+  "standardAttributeSuppressedPropertiesByTypeAndName": {
+    "document": {
+      "Номер": [
+        "ЗначениеЗаполнения"
+      ]
+    },
+    "exchange_plan": {
+      "Код": [
+        "ПроверкаЗаполнения"
+      ]
+    },
+    "task": {
+      "Номер": [
+        "ЗначениеЗаполнения"
+      ]
+    }
+  },
+  "standardAttributeSuppressedValues": {
+    "ЗначениеЗаполнения": [
+      "Ложь",
+      "0001-01-01T00:00:00"
+    ]
+  },
+  "standardAttributeSuppressedValueSuffixes": [
+    ".EmptyRef"
+  ],
+  "standardAttributeSuppressedNames": [
+    "Период",
+    "Владелец",
+    "Наименование",
+    "Дата",
+    "НомерСтроки"
+  ],
+  "standardAttributeNoisyProperties": [
+    "ПроверкаЗаполнения",
+    "ЗаполнятьИзДанныхЗаполнения",
+    "РежимСокращенияТипа"
+  ],
+  "standardAttributeKeepEmptyValueNames": [
+    "ТочкаМаршрута",
+    "БизнесПроцесс"
+  ],
+  "standardAttributeKeepEmptyValueOwnerAttributes": [],
+  "characteristicDataPathFieldStrategy": "typesFilterField",
+  "characteristicBlankFieldValues": [
+    "-1",
+    "0"
+  ],
+  "typeValuePriorityValues": [
+    "cfg:AnyIBRef"
+  ],
+  "typeValuePriorityPrefixes": [],
+  "typeValueLateValues": [
+    "СправочникСсылка"
+  ],
+  "blockedOutputPropertyNames": [
+    "Картинка"
+  ],
+  "blockedPropertyNames": [
+    "Module",
+    "ManagerModule",
+    "ObjectModule",
+    "FormModule",
+    "File",
+    "Path",
+    "UUID",
+    "Id",
+    "ID",
+    "Content",
+    "RequiredMobileApplicationPermissions",
+    "MinValue",
+    "MaxValue",
+    "LinkByType"
+  ],
+  "blockedPropertyFragments": [
+    "Модуль",
+    "Путь",
+    "Файл",
+    "Module",
+    "Path",
+    "File",
+    "BSL",
+    "Code",
+    "Git"
+  ],
+  "listPropertyNames": [
+    "Тип",
+    "ТипПараметраКоманды",
+    "Владельцы",
+    "СочетаниеКлавиш",
+    "СвязиПараметровВыбора",
+    "ПараметрыВыбора",
+    "ОсновныеРоли",
+    "ВводитсяНаОсновании",
+    "ВводПоСтроке",
+    "Движения",
+    "ПоляБлокировкиДанных",
+    "Источник",
+    "ТипВозвращаемогоЗначенияXDTO",
+    "ТипЗначенияXDTO",
+    "Состав",
+    "РегистрируемыеДокументы"
+  ],
+  "inlineJoinedListPropertyNames": [
+    "НазначенияИспользования"
+  ],
+  "joinedListPropertyNames": [
+    "ВводПоСтроке",
+    "Тип",
+    "Источник"
+  ],
+  "markerPropertyNamesWithColon": [
+    "Использование",
+    "Ссылки"
+  ],
+  "emptyQuotedListPropertyNames": [
+    "СочетаниеКлавиш",
+    "ТипПараметраКоманды",
+    "Источник",
+    "ПоляБлокировкиДанных",
+    "ВводПоСтроке",
+    "Тип"
+  ],
+  "emptyListPropertyNames": [
+    "ВводитсяНаОсновании",
+    "Владельцы",
+    "Источник",
+    "Состав",
+    "ПоляБлокировкиДанных"
+  ],
+  "suppressedEmptyPropertyNames": [
+    "Картинка",
+    "Описание",
+    "Значение"
+  ],
+  "markerDefaultPropertyNames": [
+    "СтандартныеРеквизиты"
+  ],
+  "markerPropertyNamesByType": {
+    "document_journal_column": [
+      "Ссылки"
+    ],
+    "functional_option_parameter": [
+      "Использование"
+    ]
+  },
+  "extensionInheritedPropertyNames": [
+    "Иерархический",
+    "ВидИерархии",
+    "Владельцы",
+    "ДлинаКода",
+    "ДлинаНаименования",
+    "ТипКода",
+    "ДопустимаяДлинаКода",
+    "Движения",
+    "ПовторноеИспользованиеВозвращаемыхЗначений"
+  ],
+  "extensionSyntheticPropertyDefaultsByType": {
+    "document": {
+      "ТипНомера": "Строка",
+      "ДлинаНомера": "9",
+      "ДопустимаяДлинаНомера": "Переменная",
+      "ПериодичностьНомера": "Непериодический",
+      "КонтрольУникальности": "Истина"
+    },
+    "catalog": {
+      "Иерархический": "Ложь",
+      "ДлинаКода": "9",
+      "ДлинаНаименования": "25",
+      "ТипКода": "Строка"
+    }
+  },
+  "extensionAdoptedEmptyPropertyNames": [
+    "Нумератор",
+    "ОсновнаяФормаОбъекта",
+    "ОсновнаяФормаГруппы",
+    "ОсновнаяФормаСписка",
+    "ОсновнаяФормаДляВыбора",
+    "ОсновнаяФормаДляВыбораГруппы",
+    "ДополнительнаяФормаОбъекта",
+    "ДополнительнаяФормаГруппы",
+    "ДополнительнаяФормаСписка",
+    "ДополнительнаяФормаДляВыбора",
+    "ДополнительнаяФормаДляВыбораГруппы",
+    "ПредставлениеОбъекта",
+    "РасширенноеПредставлениеОбъекта",
+    "ПредставлениеСписка",
+    "РасширенноеПредставлениеСписка",
+    "Пояснение"
+  ],
+  "extensionAdoptedSuppressedMarkerPropertyNames": [
+    "СтандартныеРеквизиты",
+    "Характеристики"
+  ],
+  "propertyValueTranslations": {
+    "Маска": {
+      "Ложь": "false"
+    },
+    "Источник": {
+      "БизнесПроцессОбъект": "",
+      "ЗадачаОбъект": "",
+      "ПланВидовРасчетаОбъект": "",
+      "ПланВидовХарактеристикОбъект": ""
+    },
+    "ТипФормы": {
+      "Управляемый": "Управляемая"
+    }
+  },
+  "propertyValuePrefixTranslations": {
+    "Обработчик": {
+      "ОбщийМодуль.": ""
+    }
+  },
+  "compactMetadataReferencePropertyNames": [
+    "ПоляБлокировкиДанных"
+  ],
+  "suppressedPropertyValuePrefixes": {
+    "Картинка": [
+      "StdPicture."
+    ]
+  },
+  "valueTranslations": {
+    "ManagedApplication": "УправляемоеПриложение",
+    "OrdinaryApplication": "ОбычноеПриложение",
+    "PlatformApplication": "ПриложениеПлатформы",
+    "MobilePlatformApplication": "ПриложениеМобильнойПлатформы",
+    "Russian": "Русский",
+    "xs:string": "Строка",
+    "xs:decimal": "Число",
+    "xs:boolean": "Булево",
+    "xs:dateTime": "Дата",
+    "xs": "http://www.w3.org/2001/XMLSchema",
+    "v8": "http://v8.1c.ru/8.1/data/core",
+    "true": "Истина",
+    "false": "Ложь",
+    "истина": "Истина",
+    "ложь": "Ложь",
+    "Name": "Имя",
+    "ObjectBelonging": "ПринадлежностьОбъекта",
+    "ExtendedConfigurationObject": "ОбъектРасширяемойКонфигурации",
+    "FillValue": "ЗначениеЗаполнения",
+    "XDTONamespaceLabel": "URIПространстваИмен",
+    "XDTOLocalNameLabel": "ЛокальноеИмя",
+    "CharacteristicTypes": "ВидыХарактеристик",
+    "CharacteristicValues": "ЗначенияХарактеристик",
+    "KeyField": "ПолеКлюча",
+    "TypesFilterField": "ПолеОтбораВидов",
+    "TypesFilterValue": "ЗначениеОтбораВидов",
+    "DataPathField": "ПолеПутиКДанным",
+    "ObjectField": "ПолеОбъекта",
+    "TypeField": "ПолеВида",
+    "ValueField": "ПолеЗначения",
+    "MultipleValuesUseField": "ПолеИспользованияМножественныхЗначений",
+    "MultipleValuesKeyField": "ПолеКлючаМножественныхЗначений",
+    "MultipleValuesOrderField": "ПолеПорядкаМножественныхЗначений",
+    "String": "Строка",
+    "Number": "Число",
+    "Date": "Дата",
+    "Boolean": "Булево",
+    "Catalog": "Справочник",
+    "Document": "Документ",
+    "InformationRegister": "РегистрСведений",
+    "AccumulationRegister": "РегистрНакопления",
+    "AccountingRegister": "РегистрБухгалтерии",
+    "CalculationRegister": "РегистрРасчета",
+    "TabularSection": "ТабличнаяЧасть",
+    "Attribute": "Реквизит",
+    "Dimension": "Измерение",
+    "Resource": "Ресурс",
+    "StandardAttribute": "СтандартныйРеквизит",
+    "Ref": "Ссылка",
+    "Code": "Код",
+    "Description": "Наименование",
+    "CatalogRef": "СправочникСсылка",
+    "DocumentRef": "ДокументСсылка",
+    "EnumRef": "ПеречислениеСсылка",
+    "ChartOfCharacteristicTypesRef": "ПланВидовХарактеристикСсылка",
+    "BusinessProcessRef": "БизнесПроцессСсылка",
+    "TaskRef": "ЗадачаСсылка",
+    "mxl:SpreadsheetDocument": "ТабличныйДокумент",
+    "dcsset:SettingsComposer": "КомпоновщикНастроекКомпоновкиДанных",
+    "Nonperiodical": "Непериодический",
+    "Year": "Год",
+    "Quarter": "Квартал",
+    "Month": "Месяц",
+    "Day": "День",
+    "Variable": "Переменная",
+    "DateTime": "ДатаВремя",
+    "Time": "Время",
+    "NonNegative": "Неотрицательный",
+    "Nonnegative": "Неотрицательный",
+    "v8:ValueStorage": "ХранилищеЗначения",
+    "TransformValues": "ПреобразовыватьЗначения",
+    "Independent": "Независимый",
+    "Single": "Одиночный",
+    "Multiple": "Множественный",
+    "ToItems": "Элементам",
+    "Automatic": "Автоматический",
+    "AnyPart": "ЛюбаяЧасть",
+    "AutoUpdate": "ОбновлятьАвтоматически",
+    "AutoUse": "ИспользоватьАвтоматически",
+    "DontAutoUpdate": "НеОбновлятьАвтоматически",
+    "Folders": "Группы",
+    "FoldersAndItems": "ГруппыИЭлементы",
+    "HierarchyOfItems": "ИерархияЭлементов",
+    "QuickChoice": "БыстрыйВыбор",
+    "RecorderSubordinate": "ПодчинениеРегистратору",
+    "Turnovers": "Обороты",
+    "HierarchyFoldersAndItems": "ИерархияГруппИЭлементов",
+    "WholeCatalog": "ВоВсемСправочнике",
+    "WholeCharacteristicKind": "ВоВсемПланеВидовХарактеристик",
+    "WithinOwnerSubordination": "ВПределахПодчиненияВладельцу",
+    "WithinSubordination": "ВПределахПодчинения",
+    "cfg:ExchangePlanRef": "ПланОбменаСсылка",
+    "cfg:ExchangePlanObject": "ПланОбменаОбъект",
+    "cfg:CatalogObject": "СправочникОбъект",
+    "cfg:DocumentObject": "ДокументОбъект",
+    "cfg:BusinessProcessObject": "БизнесПроцессОбъект",
+    "cfg:TaskObject": "ЗадачаОбъект",
+    "cfg:ChartOfAccountsObject": "ПланСчетовОбъект",
+    "cfg:ChartOfCalculationTypesObject": "ПланВидовРасчетаОбъект",
+    "cfg:ChartOfCharacteristicTypesObject": "ПланВидовХарактеристикОбъект",
+    "cfg:InformationRegisterRecordSet": "РегистрСведенийНаборЗаписей",
+    "cfg:AccumulationRegisterRecordSet": "РегистрНакопленияНаборЗаписей",
+    "cfg:AccountingRegisterRecordSet": "РегистрБухгалтерииНаборЗаписей",
+    "cfg:CalculationRegisterRecordSet": "РегистрРасчетаНаборЗаписей",
+    "cfg:ConstantValueManager": "КонстантаМенеджерЗначения",
+    "cfg:EnumRef": "ПеречислениеСсылка",
+    "cfg:ChartOfCharacteristicTypesRef": "ПланВидовХарактеристикСсылка",
+    "cfg:ChartOfCalculationTypesRef": "ПланВидовРасчетаСсылка",
+    "cfg:ChartOfAccountsRef": "ПланСчетовСсылка",
+    "cfg:TaskRef": "ЗадачаСсылка",
+    "cfg:BusinessProcessRef": "БизнесПроцессСсылка",
+    "cfg:AnyIBRef": "ЛюбаяСсылка",
+    "cfg:ConstantsSet": "НаборКонстант",
+    "cfg:ReportBuilder": "ПостроительОтчета",
+    "Adopted": "Заимствованный",
+    "DuringSession": "НаВремяСеанса",
+    "InOut": "ВходнойВыходной",
+    "PictureAndText": "КартинкаИТекст",
+    "IndexWithAdditionalOrder": "ИндексироватьСДопУпорядочиванием",
+    "Second": "Секунда",
+    "Ordinary": "Обычная",
+    "ForFolderAndItem": "ДляГруппыИЭлемента",
+    "cfg:CatalogRef": "СправочникСсылка",
+    "cfg:DocumentRef": "ДокументСсылка",
+    "v8:FixedStructure": "ФиксированнаяСтруктура",
+    "v8:FixedArray": "ФиксированныйМассив",
+    "v8:FixedMap": "ФиксированноеСоответствие",
+    "v8:ValueTable": "ТаблицаЗначений",
+    "v8:ValueTree": "ДеревоЗначений",
+    "v8:ValueListType": "СписокЗначений",
+    "v8:StandardPeriod": "СтандартныйПериод",
+    "BeforeWrite": "ПередЗаписью",
+    "OnWrite": "ПриЗаписи",
+    "BeforeDelete": "ПередУдалением",
+    "FormGetProcessing": "ОбработкаПолученияФормы",
+    "FillCheckProcessing": "ОбработкаПроверкиЗаполнения",
+    "PresentationGetProcessing": "ОбработкаПолученияПредставления",
+    "PresentationFieldsGetProcessing": "ОбработкаПолученияПолейПредставления",
+    "Posting": "ОбработкаПроведения",
+    "OnSetNewNumber": "ПриУстановкеНовогоНомера",
+    "OnSendNodeDataToSlave": "ПриОтправкеДанныхУзлаПодчиненному",
+    "OnCopy": "ПриКопировании",
+    "Filling": "ОбработкаЗаполнения",
+    "OnReceiveDataFromSlave": "ПриПолученииДанныхОтПодчиненного",
+    "OnSendDataToMaster": "ПриОтправкеДанныхГлавному",
+    "OnSendDataToSlave": "ПриОтправкеДанныхПодчиненному",
+    "OnReceiveDataFromMaster": "ПриПолученииДанныхОтГлавного",
+    "SpreadsheetDocument": "ТабличныйДокумент",
+    "HTMLDocument": "HTMLДокумент",
+    "BinaryData": "ДвоичныеДанные",
+    "AddIn": "ВнешняяКомпонента",
+    "InList": "ВСписке",
+    "NavigationPanelOrdinary": "ПанельНавигацииОбычное",
+    "ActionsPanelTools": "ПанельДействийСервис",
+    "FormCommandBarImportant": "КоманднаяПанельФормыВажное",
+    "FormNavigationPanelGoTo": "ПанельНавигацииФормыПерейти",
+    "NavigationPanelSeeAlso": "ПанельНавигацииСмТакже",
+    "FormNavigationPanelSeeAlso": "ПанельНавигацииФормыСмТакже",
+    "NavigationPanelImportant": "ПанельНавигацииВажное",
+    "ActionsPanelCreate": "ПанельДействийСоздать",
+    "ActionsPanelReports": "ПанельДействийОтчеты",
+    "FormCommandBarCreateBasedOn": "КоманднаяПанельФормыСоздатьНаОсновании",
+    "FormNavigationPanelImportant": "ПанельНавигацииФормыВажное",
+    "DataCompositionSchema": "СхемаКомпоновкиДанных",
+    "v8:UUID": "УникальныйИдентификатор",
+    "Fixed": "Фиксированная",
+    "Allow": "Разрешить",
+    "Deny": "Запретить",
+    "Use": "Использовать",
+    "DontUse": "НеИспользовать",
+    "Auto": "Авто",
+    "DontCheck": "НеПроверять",
+    "ShowError": "ВыдаватьОшибку",
+    "Items": "Элементы",
+    "Index": "Индексировать",
+    "DontIndex": "НеИндексировать",
+    "Clear": "Очищать",
+    "ForItem": "ДляЭлемента",
+    "Managed": "Управляемый",
+    "Normal": "Обычный",
+    "UnknownObject": "НеизвестныйОбъект",
+    "Version8_3_25": "Версия8_3_25",
+    "Version8_3_27": "Версия8_3_27",
+    "DuringRequest": "НаВремяВызова",
+    "TaxiEnableVersion8_2": "ТаксиРазрешитьВерсия8_2",
+    "UseWithWarnings": "ИспользоватьСПредупреждениями",
+    "NotAutoFree": "НеОсвобождатьАвтоматически",
+    "WriteSelected": "ЗаписыватьВыбранные",
+    "AutoFill": "ЗаполнятьАвтоматически",
+    "AutoDeleteOnUnpost": "УдалятьАвтоматическиПриОтменеПроведения",
+    "Directly": "Непосредственно",
+    "Begin": "Начало",
+    "BothWays": "ОбоимиСпособами",
+    "AsDescription": "ВВидеНаименования",
+    "AsCode": "ВВидеКода",
+    "Font": "Шрифт",
+    "Color": "Цвет",
+    "Picture": "Картинка",
+    "TextDocument": "ТекстовыйДокумент",
+    "FormCommandBar": "КоманднаяПанельФормы",
+    "UseAutomatically": "ИспользоватьАвтоматически",
+    "In": "Входной",
+    "Out": "Выходной",
+    "Receive": "Получение",
+    "Send": "Отправка",
+    "Independently": "Независимо",
+    "Separate": "Разделять",
+    "Any": "Любой",
+    "POST": "POST",
+    "GET": "GET",
+    "OPTIONS": "OPTIONS",
+    "PUT": "PUT",
+    "DELETE": "DELETE",
+    "BusinessProcessNumber": "НомерБизнесПроцесса",
+    "InDialog": "ВДиалоге"
+  },
+  "valuePrefixTranslations": {
+    "cfg:CatalogRef.": "СправочникСсылка.",
+    "cfg:DocumentRef.": "ДокументСсылка.",
+    "cfg:EnumRef.": "ПеречислениеСсылка.",
+    "cfg:ExchangePlanRef.": "ПланОбменаСсылка.",
+    "cfg:InformationRegisterRecordSet.": "РегистрСведенийНаборЗаписей.",
+    "cfg:CatalogManager.": "СправочникМенеджер.",
+    "cfg:DocumentManager.": "ДокументМенеджер.",
+    "cfg:BusinessProcessManager.": "БизнесПроцессМенеджер.",
+    "cfg:TaskRef.": "ЗадачаСсылка.",
+    "cfg:TaskObject.": "ЗадачаОбъект.",
+    "cfg:BusinessProcessRef.": "БизнесПроцессСсылка.",
+    "cfg:BusinessProcessObject.": "БизнесПроцессОбъект.",
+    "cfg:ChartOfAccountsRef.": "ПланСчетовСсылка.",
+    "cfg:ChartOfCalculationTypesRef.": "ПланВидовРасчетаСсылка.",
+    "cfg:ChartOfCharacteristicTypesObject.": "ПланВидовХарактеристикОбъект.",
+    "cfg:DataProcessorObject.": "ОбработкаОбъект.",
+    "cfg:ConstantValueManager.": "КонстантаМенеджерЗначения.",
+    "cfg:Characteristic.": "Характеристика.",
+    "cfg:ChartOfCharacteristicTypesRef.": "ПланВидовХарактеристикСсылка.",
+    "cfg:DefinedType.": "ОпределяемыйТип.",
+    "cfg:CatalogObject.": "СправочникОбъект.",
+    "cfg:DocumentObject.": "ДокументОбъект.",
+    "Role.": "Роль.",
+    "Language.": "Язык.",
+    "Document.": "Документ.",
+    "Constant.": "Константа.",
+    "Catalog.": "Справочник.",
+    "Subsystem.": "Подсистема.",
+    "InformationRegister.": "РегистрСведений.",
+    "AccumulationRegister.": "РегистрНакопления.",
+    "AccountingRegister.": "РегистрБухгалтерии.",
+    "CalculationRegister.": "РегистрРасчета.",
+    "Report.": "Отчет.",
+    "DataProcessor.": "Обработка.",
+    "Enum.": "Перечисление.",
+    "CommonModule.": "ОбщийМодуль.",
+    "CommonForm.": "ОбщаяФорма.",
+    "CommonCommand.": "ОбщаяКоманда.",
+    "CommandGroup.": "ГруппаКоманд.",
+    "CommonTemplate.": "ОбщийМакет.",
+    "CommonPicture.": "ОбщаяКартинка.",
+    "ExchangePlan.": "ПланОбмена.",
+    "XDTOPackage.": "ПакетXDTO.",
+    "WebService.": "WebСервис.",
+    "HTTPService.": "HTTPСервис.",
+    "DocumentJournal.": "ЖурналДокументов.",
+    "BusinessProcess.": "БизнесПроцесс.",
+    "Task.": "Задача.",
+    "EventSubscription.": "ПодпискаНаСобытие.",
+    "DefinedType.": "ОпределяемыйТип.",
+    "SettingsStorage.": "ХранилищеНастроек.",
+    "SessionParameter.": "ПараметрСеанса.",
+    "ChartOfCharacteristicTypes.": "ПланВидовХарактеристик.",
+    "FunctionalOption.": "ФункциональнаяОпция.",
+    "FunctionalOptionsParameter.": "ПараметрФункциональныхОпций.",
+    "ScheduledJob.": "РегламентноеЗадание.",
+    "CommonAttribute.": "ОбщийРеквизит.",
+    "IntegrationService.": "СервисИнтеграции.",
+    "FilterCriterion.": "КритерийОтбора.",
+    "StyleItem.": "ЭлементСтиля."
+  },
+  "valueSegmentTranslations": {
+    ".Form.": ".Форма.",
+    ".Template.": ".Макет.",
+    ".Command.": ".Команда.",
+    ".Subsystem.": ".Подсистема.",
+    ".TabularSection.": ".ТабличнаяЧасть.",
+    ".Attribute.": ".Реквизит.",
+    ".Dimension.": ".Измерение.",
+    ".Resource.": ".Ресурс.",
+    ".StandardAttribute.": ".СтандартныйРеквизит.",
+    ".URLTemplate.": ".ШаблонURL.",
+    ".Method.": ".Метод.",
+    ".AddressingAttribute.": ".РеквизитАдресации.",
+    ".RoutePoint.": ".ТочкаМаршрута."
+  },
+  "childCollections": {
+    "attributes": {
+      "folderNames": [
+        "Attributes",
+        "Реквизиты"
+      ],
+      "reportPlural": "Реквизиты",
+      "typeKey": "attribute",
+      "whitelist": [
+        "@common",
+        "Тип",
+        "РежимПароля",
+        "Формат",
+        "ФорматРедактирования",
+        "Подсказка",
+        "ВыделятьОтрицательные",
+        "Маска",
+        "МногострочныйРежим",
+        "РасширенноеРедактирование",
+        "ЗаполнятьИзДанныхЗаполнения",
+        "ЗначениеЗаполнения",
+        "ПроверкаЗаполнения",
+        "ВыборГруппИЭлементов",
+        "СвязиПараметровВыбора",
+        "ПараметрыВыбора",
+        "БыстрыйВыбор",
+        "СозданиеПриВводе",
+        "ФормаВыбора",
+        "ИсторияВыбораПриВводе",
+        "Использование",
+        "Индексирование",
+        "ПолнотекстовыйПоиск",
+        "ИсторияДанных"
+      ],
+      "xmlElementNames": [
+        "Attribute"
+      ]
+    },
+    "attributesWithBinaryStorage": {
+      "folderNames": [
+        "Attributes",
+        "Реквизиты"
+      ],
+      "reportPlural": "Реквизиты",
+      "typeKey": "attribute",
+      "whitelist": [
+        "@common",
+        "Тип",
+        "РежимПароля",
+        "Формат",
+        "ФорматРедактирования",
+        "Подсказка",
+        "ВыделятьОтрицательные",
+        "Маска",
+        "МногострочныйРежим",
+        "РасширенноеРедактирование",
+        "ЗаполнятьИзДанныхЗаполнения",
+        "ЗначениеЗаполнения",
+        "ПроверкаЗаполнения",
+        "ВыборГруппИЭлементов",
+        "СвязиПараметровВыбора",
+        "ПараметрыВыбора",
+        "БыстрыйВыбор",
+        "СозданиеПриВводе",
+        "ФормаВыбора",
+        "ИсторияВыбораПриВводе",
+        "Использование",
+        "Индексирование",
+        "ПолнотекстовыйПоиск",
+        "ИсторияДанных",
+        "ИспользованиеХраненияВХранилищеДвоичныхДанных",
+        "ПолеИспользованияХраненияВХранилищеДвоичныхДанных"
+      ],
+      "xmlElementNames": [
+        "Attribute"
+      ]
+    },
+    "tabularSectionAttributes": {
+      "folderNames": [
+        "Attributes",
+        "Реквизиты"
+      ],
+      "reportPlural": "Реквизиты",
+      "typeKey": "tabular_section_attribute",
+      "whitelist": [
+        "@common",
+        "Тип",
+        "РежимПароля",
+        "Формат",
+        "ФорматРедактирования",
+        "Подсказка",
+        "ВыделятьОтрицательные",
+        "Маска",
+        "МногострочныйРежим",
+        "РасширенноеРедактирование",
+        "ЗаполнятьИзДанныхЗаполнения",
+        "ЗначениеЗаполнения",
+        "ПроверкаЗаполнения",
+        "ВыборГруппИЭлементов",
+        "СвязиПараметровВыбора",
+        "ПараметрыВыбора",
+        "БыстрыйВыбор",
+        "СозданиеПриВводе",
+        "ФормаВыбора",
+        "ИсторияВыбораПриВводе",
+        "Использование",
+        "Индексирование",
+        "ПолнотекстовыйПоиск",
+        "ИсторияДанных"
+      ],
+      "xmlElementNames": [
+        "Attribute"
+      ]
+    },
+    "tabularSections": {
+      "folderNames": [
+        "TabularSections",
+        "ТабличныеЧасти"
+      ],
+      "reportPlural": "ТабличныеЧасти",
+      "typeKey": "tabular_section",
+      "whitelist": [
+        "@common",
+        "СтандартныеРеквизиты",
+        "Подсказка",
+        "ПроверкаЗаполнения",
+        "ДлинаНомераСтроки"
+      ],
+      "childCollections": [
+        "tabularSectionAttributes"
+      ],
+      "xmlElementNames": [
+        "TabularSection"
+      ]
+    },
+    "dimensions": {
+      "folderNames": [
+        "Dimensions",
+        "Измерения"
+      ],
+      "reportPlural": "Измерения",
+      "typeKey": "dimension",
+      "whitelist": [
+        "@common",
+        "Тип",
+        "РежимПароля",
+        "Формат",
+        "ФорматРедактирования",
+        "Подсказка",
+        "ВыделятьОтрицательные",
+        "Маска",
+        "МногострочныйРежим",
+        "РасширенноеРедактирование",
+        "ЗаполнятьИзДанныхЗаполнения",
+        "ЗначениеЗаполнения",
+        "ПроверкаЗаполнения",
+        "ВыборГруппИЭлементов",
+        "СвязиПараметровВыбора",
+        "ПараметрыВыбора",
+        "БыстрыйВыбор",
+        "СозданиеПриВводе",
+        "ФормаВыбора",
+        "ИсторияВыбораПриВводе",
+        "Использование",
+        "Индексирование",
+        "ПолнотекстовыйПоиск",
+        "ИсторияДанных"
+      ],
+      "xmlElementNames": [
+        "Dimension"
+      ]
+    },
+    "resources": {
+      "folderNames": [
+        "Resources",
+        "Ресурсы"
+      ],
+      "reportPlural": "Ресурсы",
+      "typeKey": "resource",
+      "whitelistRef": "attributes",
+      "xmlElementNames": [
+        "Resource"
+      ]
+    },
+    "resourcesWithBinaryStorage": {
+      "folderNames": [
+        "Resources",
+        "Ресурсы"
+      ],
+      "reportPlural": "Ресурсы",
+      "typeKey": "resource",
+      "whitelistRef": "attributesWithBinaryStorage",
+      "xmlElementNames": [
+        "Resource"
+      ]
+    },
+    "forms": {
+      "folderNames": [
+        "Forms",
+        "Формы"
+      ],
+      "reportPlural": "Формы",
+      "typeKey": "form",
+      "whitelist": [
+        "@common",
+        "ВключатьСправкуВСодержание",
+        "ВключатьВКомандныйИнтерфейс",
+        "ИспользоватьОднуКоманду",
+        "Пояснение",
+        "Состав"
+      ],
+      "xmlElementNames": [
+        "Form"
+      ]
+    },
+    "commands": {
+      "folderNames": [
+        "Commands",
+        "Команды"
+      ],
+      "reportPlural": "Команды",
+      "typeKey": "command",
+      "whitelist": [
+        "@common",
+        "ВключатьСправкуВСодержание",
+        "ВключатьВКомандныйИнтерфейс",
+        "ИспользоватьОднуКоманду",
+        "Пояснение",
+        "Состав"
+      ],
+      "xmlElementNames": [
+        "Command"
+      ]
+    },
+    "templates": {
+      "folderNames": [
+        "Templates",
+        "Layouts",
+        "Макеты"
+      ],
+      "reportPlural": "Макеты",
+      "typeKey": "template",
+      "whitelist": [
+        "@common"
+      ],
+      "xmlElementNames": [
+        "Template"
+      ]
+    },
+    "enumValues": {
+      "folderNames": [
+        "Values",
+        "EnumValues",
+        "Значения"
+      ],
+      "reportPlural": "ЗначенияПеречисления",
+      "typeKey": "enum_value",
+      "whitelist": [
+        "@common"
+      ],
+      "xmlElementNames": [
+        "EnumValue",
+        "Value"
+      ]
+    },
+    "subsystems": {
+      "folderNames": [
+        "Subsystems",
+        ".",
+        "Подсистемы"
+      ],
+      "reportPlural": "Подсистемы",
+      "typeKey": "subsystem",
+      "whitelist": [
+        "@common",
+        "ВключатьСправкуВСодержание",
+        "ВключатьВКомандныйИнтерфейс",
+        "ИспользоватьОднуКоманду",
+        "Пояснение",
+        "Состав"
+      ],
+      "xmlElementNames": [
+        "Subsystem"
+      ]
+    },
+    "webServiceOperationParameters": {
+      "folderNames": [
+        "Parameters",
+        "Параметры"
+      ],
+      "reportPlural": "Параметры",
+      "typeKey": "web_service_operation_parameter",
+      "whitelist": [
+        "@common",
+        "ТипЗначенияXDTO",
+        "ВозможноПустое",
+        "НаправлениеПередачи"
+      ],
+      "xmlElementNames": [
+        "Parameter"
+      ]
+    },
+    "webServiceOperations": {
+      "folderNames": [
+        "Operations",
+        "Операции"
+      ],
+      "reportPlural": "Операции",
+      "typeKey": "web_service_operation",
+      "whitelist": [
+        "@common",
+        "ТипВозвращаемогоЗначенияXDTO",
+        "ВозможноПустое",
+        "ВТранзакции",
+        "ИмяПроцедуры",
+        "РежимУправленияБлокировкойДанных"
+      ],
+      "childCollections": [
+        "webServiceOperationParameters"
+      ],
+      "xmlElementNames": [
+        "Operation"
+      ]
+    },
+    "httpServiceMethods": {
+      "folderNames": [
+        "Methods",
+        "Методы"
+      ],
+      "reportPlural": "Методы",
+      "typeKey": "http_service_method",
+      "whitelist": [
+        "@common",
+        "HTTPМетод",
+        "Обработчик"
+      ],
+      "xmlElementNames": [
+        "Method"
+      ]
+    },
+    "httpServiceUrlTemplates": {
+      "folderNames": [
+        "URLTemplates",
+        "ШаблоныURL"
+      ],
+      "reportPlural": "ШаблоныURL",
+      "typeKey": "http_service_url_template",
+      "whitelist": [
+        "@common",
+        "Шаблон"
+      ],
+      "childCollections": [
+        "httpServiceMethods"
+      ],
+      "xmlElementNames": [
+        "URLTemplate"
+      ]
+    },
+    "integrationServiceChannels": {
+      "folderNames": [
+        "Channels",
+        "КаналыСервисаИнтеграции"
+      ],
+      "reportPlural": "КаналыСервисаИнтеграции",
+      "typeKey": "integration_service_channel",
+      "whitelist": [
+        "@common",
+        "ИмяКаналаВнешнегоСервисаИнтеграции",
+        "НаправлениеСообщения",
+        "ОбработкаПолученияСообщения",
+        "ВТранзакции"
+      ],
+      "xmlElementNames": [
+        "IntegrationServiceChannel"
+      ]
+    },
+    "addressingAttributes": {
+      "folderNames": [
+        "AddressingAttributes",
+        "РеквизитыАдресации"
+      ],
+      "reportPlural": "РеквизитыАдресации",
+      "typeKey": "addressing_attribute",
+      "whitelistRef": "attributes",
+      "xmlElementNames": [
+        "AddressingAttribute"
+      ]
+    },
+    "documentJournalColumns": {
+      "folderNames": [
+        "Columns",
+        "Графы"
+      ],
+      "reportPlural": "Графы",
+      "typeKey": "document_journal_column",
+      "whitelist": [
+        "@common",
+        "Индексирование",
+        "Ссылки"
+      ],
+      "xmlElementNames": [
+        "Column"
+      ]
+    },
+    "accountingFlags": {
+      "folderNames": [
+        "AccountingFlags",
+        "ПризнакиУчета"
+      ],
+      "reportPlural": "ПризнакиУчета",
+      "typeKey": "accounting_flag",
+      "whitelistRef": "attributes",
+      "xmlElementNames": [
+        "AccountingFlag"
+      ]
+    },
+    "extDimensionAccountingFlags": {
+      "folderNames": [
+        "ExtDimensionAccountingFlags",
+        "ПризнакиУчетаСубконто"
+      ],
+      "reportPlural": "ПризнакиУчетаСубконто",
+      "typeKey": "ext_dimension_accounting_flag",
+      "whitelistRef": "attributes",
+      "xmlElementNames": [
+        "ExtDimensionAccountingFlag"
+      ]
+    }
+  },
+  "configurationWhitelist": [
+    "@common",
+    "ПоддерживатьСоответствиеОбъектамРасширяемойКонфигурацииПоВнутреннимИдентификаторам",
+    "ПрефиксИмен",
+    "РежимСовместимостиРасширенияКонфигурации",
+    "ОсновнойРежимЗапуска",
+    "НазначенияИспользования",
+    "ВариантВстроенногоЯзыка",
+    "ОсновныеРоли",
+    "Поставщик",
+    "Версия",
+    "АдресКаталогаОбновлений",
+    "ВключатьСправкуВСодержание",
+    "ИспользоватьУправляемыеФормыВОбычномПриложении",
+    "ИспользоватьОбычныеФормыВУправляемомПриложении",
+    "ДополнительныеСловариПолнотекстовогоПоиска",
+    "ХранилищеОбщихНастроек",
+    "ХранилищеПользовательскихНастроекОтчетов",
+    "ХранилищеВариантовОтчетов",
+    "ХранилищеНастроекДанныхФорм",
+    "ХранилищеПользовательскихНастроекДинамическихСписков",
+    "ХранилищеВнешнихДанныхНавигационныхСсылок",
+    "ОсновнаяФормаОтчета",
+    "ОсновнаяФормаВариантаОтчета",
+    "ОсновнаяФормаНастроекОтчета",
+    "ОсновнойМакетОформленияОтчета",
+    "ОсновнаяФормаНастроекДинамическогоСписка",
+    "ОсновнаяФормаПоиска",
+    "ОсновнаяФормаИсторииИзмененийИсторииДанных",
+    "ОсновнаяФормаДанныхВерсииИсторииДанных",
+    "ОсновнаяФормаРазличийВерсийИсторииДанных",
+    "ОсновнаяФормаВыбораПользователейСистемыВзаимодействия",
+    "ИспользуемаяФункциональностьМобильногоПриложения",
+    "РолиОграниченияАвтономнойКонфигурации",
+    "НавигационныеСсылкиМобильногоПриложения",
+    "ДопустимыеТипыВходящихЗапросовПоделиться",
+    "РежимОсновногоОкнаКлиентскогоПриложения",
+    "ОсновнойИнтерфейс",
+    "ОсновнойСтиль",
+    "ОсновнойЯзык",
+    "КраткаяИнформация",
+    "ПодробнаяИнформация",
+    "АвторскиеПрава",
+    "АдресИнформацииОПоставщике",
+    "АдресИнформацииОКонфигурации",
+    "РежимУправленияБлокировкойДанных",
+    "РежимХранилищаДвоичныхДанных",
+    "РежимИспользованияБлочногоХраненияДвоичныхДанных",
+    "РежимАвтонумерацииОбъектов",
+    "РежимИспользованияМодальности",
+    "РежимИспользованияСинхронныхВызововРасширенийПлатформыИВнешнихКомпонент",
+    "РежимСовместимостиИнтерфейса",
+    "РежимИспользованияТабличныхПространствБазыДанных",
+    "РежимСовместимости",
+    "ОсновнаяФормаКонстант"
+  ],
+  "objectTypes": [
+    {
+      "typeKey": "subsystem",
+      "folderNames": [
+        "Subsystems",
+        "Подсистемы"
+      ],
+      "xmlElementNames": [
+        "Subsystem"
+      ],
+      "reportPlural": "Подсистемы",
+      "whitelist": [
+        "@common",
+        "ВключатьСправкуВСодержание",
+        "ВключатьВКомандныйИнтерфейс",
+        "ИспользоватьОднуКоманду",
+        "Пояснение",
+        "Состав"
+      ],
+      "childCollections": [
+        "subsystems"
+      ]
+    },
+    {
+      "typeKey": "common_module",
+      "folderNames": [
+        "CommonModules",
+        "ОбщиеМодули"
+      ],
+      "xmlElementNames": [
+        "CommonModule"
+      ],
+      "reportPlural": "ОбщиеМодули",
+      "whitelist": [
+        "@common",
+        "Глобальный",
+        "КлиентУправляемоеПриложение",
+        "Сервер",
+        "ВнешнееСоединение",
+        "КлиентОбычноеПриложение",
+        "ВызовСервера",
+        "Привилегированный",
+        "ПовторноеИспользованиеВозвращаемыхЗначений"
+      ]
+    },
+    {
+      "typeKey": "catalog",
+      "folderNames": [
+        "Catalogs",
+        "Справочники"
+      ],
+      "xmlElementNames": [
+        "Catalog"
+      ],
+      "reportPlural": "Справочники",
+      "whitelist": [
+        "@common",
+        "Иерархический",
+        "ВидИерархии",
+        "ОграничиватьКоличествоУровней",
+        "КоличествоУровней",
+        "ГруппыСверху",
+        "Владельцы",
+        "ИспользованиеПодчинения",
+        "ДлинаКода",
+        "ДлинаНаименования",
+        "ТипКода",
+        "ДопустимаяДлинаКода",
+        "СерииКодов",
+        "КонтрольУникальности",
+        "Автонумерация",
+        "СтандартныеРеквизиты",
+        "Характеристики",
+        "ОсновноеПредставление",
+        "СпособРедактирования",
+        "ОсновнаяФормаОбъекта",
+        "ОсновнаяФормаГруппы",
+        "ОсновнаяФормаСписка",
+        "ОсновнаяФормаДляВыбора",
+        "Пояснение",
+        "ПолнотекстовыйПоиск",
+        "ИсторияДанных",
+        "ПоляБлокировкиДанных"
+      ],
+      "childCollections": [
+        "attributesWithBinaryStorage",
+        "tabularSections",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "document",
+      "folderNames": [
+        "Documents",
+        "Документы"
+      ],
+      "xmlElementNames": [
+        "Document"
+      ],
+      "reportPlural": "Документы",
+      "whitelist": [
+        "@common",
+        "ИспользоватьСтандартныеКоманды",
+        "Нумератор",
+        "ТипНомера",
+        "ДлинаНомера",
+        "ПериодичностьНомера",
+        "КонтрольУникальности",
+        "Автонумерация",
+        "СтандартныеРеквизиты",
+        "Характеристики",
+        "ВводитсяНаОсновании",
+        "ОсновнаяФормаОбъекта",
+        "ОсновнаяФормаСписка",
+        "ОсновнаяФормаДляВыбора",
+        "Проведение",
+        "ОперативноеПроведение",
+        "Пояснение"
+      ],
+      "childCollections": [
+        "attributesWithBinaryStorage",
+        "tabularSections",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "information_register",
+      "folderNames": [
+        "InformationRegisters",
+        "РегистрыСведений"
+      ],
+      "xmlElementNames": [
+        "InformationRegister"
+      ],
+      "reportPlural": "РегистрыСведений",
+      "whitelist": [
+        "@common",
+        "Периодичность",
+        "РежимЗаписи",
+        "СтандартныеРеквизиты",
+        "ОсновнаяФормаСписка",
+        "ОсновнаяФормаЗаписи",
+        "Пояснение"
+      ],
+      "childCollections": [
+        "dimensions",
+        "resourcesWithBinaryStorage",
+        "attributesWithBinaryStorage",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "accumulation_register",
+      "folderNames": [
+        "AccumulationRegisters",
+        "РегистрыНакопления"
+      ],
+      "xmlElementNames": [
+        "AccumulationRegister"
+      ],
+      "reportPlural": "РегистрыНакопления",
+      "whitelist": [
+        "@common",
+        "Периодичность",
+        "РежимЗаписи",
+        "СтандартныеРеквизиты",
+        "ОсновнаяФормаСписка",
+        "ОсновнаяФормаЗаписи",
+        "Пояснение"
+      ],
+      "childCollections": [
+        "dimensions",
+        "resources",
+        "attributesWithBinaryStorage",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "accounting_register",
+      "folderNames": [
+        "AccountingRegisters",
+        "РегистрыБухгалтерии"
+      ],
+      "xmlElementNames": [
+        "AccountingRegister"
+      ],
+      "reportPlural": "РегистрыБухгалтерии",
+      "whitelist": [
+        "@common",
+        "ИспользоватьСтандартныеКоманды",
+        "ВключатьСправкуВСодержание",
+        "ПланСчетов",
+        "Корреспонденция",
+        "ДлинаУточненияПериода",
+        "Периодичность",
+        "РежимЗаписи",
+        "СтандартныеРеквизиты",
+        "ОсновнаяФормаСписка",
+        "ДополнительнаяФормаСписка",
+        "ОсновнаяФормаЗаписи",
+        "Пояснение"
+      ],
+      "childCollections": [
+        "dimensions",
+        "resources",
+        "attributes",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "calculation_register",
+      "folderNames": [
+        "CalculationRegisters",
+        "РегистрыРасчета"
+      ],
+      "xmlElementNames": [
+        "CalculationRegister"
+      ],
+      "reportPlural": "РегистрыРасчета",
+      "whitelist": [
+        "@common",
+        "Периодичность",
+        "РежимЗаписи",
+        "СтандартныеРеквизиты",
+        "ОсновнаяФормаСписка",
+        "ОсновнаяФормаЗаписи",
+        "Пояснение"
+      ],
+      "childCollections": [
+        "dimensions",
+        "resources",
+        "attributes",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "report",
+      "folderNames": [
+        "Reports",
+        "Отчеты"
+      ],
+      "xmlElementNames": [
+        "Report"
+      ],
+      "reportPlural": "Отчеты",
+      "whitelist": [
+        "@common",
+        "ИспользоватьСтандартныеКоманды",
+        "ОсновнаяФорма",
+        "Пояснение"
+      ],
+      "childCollections": [
+        "attributes",
+        "tabularSections",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "data_processor",
+      "folderNames": [
+        "DataProcessors",
+        "Обработки"
+      ],
+      "xmlElementNames": [
+        "DataProcessor"
+      ],
+      "reportPlural": "Обработки",
+      "whitelist": [
+        "@common",
+        "ИспользоватьСтандартныеКоманды",
+        "ОсновнаяФорма",
+        "Пояснение"
+      ],
+      "childCollections": [
+        "attributes",
+        "tabularSections",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "enumeration",
+      "folderNames": [
+        "Enumerations",
+        "Enums",
+        "Перечисления"
+      ],
+      "xmlElementNames": [
+        "Enum"
+      ],
+      "reportPlural": "Перечисления",
+      "whitelist": [
+        "@common",
+        "СтандартныеРеквизиты"
+      ],
+      "childCollections": [
+        "enumValues"
+      ]
+    },
+    {
+      "typeKey": "event_subscription",
+      "folderNames": [
+        "EventSubscriptions",
+        "ПодпискиНаСобытия"
+      ],
+      "xmlElementNames": [
+        "EventSubscription"
+      ],
+      "reportPlural": "ПодпискиНаСобытия",
+      "whitelist": [
+        "@common",
+        "Источник",
+        "Событие",
+        "Обработчик"
+      ]
+    },
+    {
+      "typeKey": "style_item",
+      "folderNames": [
+        "StyleItems",
+        "ЭлементыСтиля"
+      ],
+      "xmlElementNames": [
+        "StyleItem"
+      ],
+      "reportPlural": "ЭлементыСтиля",
+      "whitelist": [
+        "@common",
+        "Вид"
+      ],
+      "includeExtraProperties": false
+    },
+    {
+      "typeKey": "session_parameter",
+      "folderNames": [
+        "SessionParameters",
+        "ПараметрыСеанса"
+      ],
+      "xmlElementNames": [
+        "SessionParameter"
+      ],
+      "reportPlural": "ПараметрыСеанса",
+      "whitelist": [
+        "@common",
+        "Тип"
+      ]
+    },
+    {
+      "typeKey": "xdto_package",
+      "folderNames": [
+        "XDTOPackages",
+        "ПакетыXDTO"
+      ],
+      "xmlElementNames": [
+        "XDTOPackage"
+      ],
+      "reportPlural": "ПакетыXDTO",
+      "whitelist": [
+        "@common",
+        "ПространствоИмен"
+      ]
+    },
+    {
+      "typeKey": "common_template",
+      "folderNames": [
+        "CommonTemplates",
+        "ОбщиеМакеты"
+      ],
+      "xmlElementNames": [
+        "CommonTemplate"
+      ],
+      "reportPlural": "ОбщиеМакеты",
+      "whitelist": [
+        "@common",
+        "ТипМакета"
+      ]
+    },
+    {
+      "typeKey": "web_service",
+      "folderNames": [
+        "WebServices",
+        "WebСервисы"
+      ],
+      "xmlElementNames": [
+        "WebService"
+      ],
+      "reportPlural": "WebСервисы",
+      "whitelist": [
+        "@common",
+        "ПространствоИмен",
+        "ПакетыXDTO",
+        "ИмяФайлаПубликации",
+        "ПовторноеИспользованиеСеансов",
+        "ВремяЖизниСеанса"
+      ],
+      "childCollections": [
+        "webServiceOperations"
+      ]
+    },
+    {
+      "typeKey": "http_service",
+      "folderNames": [
+        "HTTPServices",
+        "HTTPСервисы"
+      ],
+      "xmlElementNames": [
+        "HTTPService"
+      ],
+      "reportPlural": "HTTPСервисы",
+      "whitelist": [
+        "@common",
+        "КорневойURL",
+        "ПовторноеИспользованиеСеансов",
+        "ВремяЖизниСеанса"
+      ],
+      "childCollections": [
+        "httpServiceUrlTemplates"
+      ]
+    },
+    {
+      "typeKey": "common_attribute",
+      "folderNames": [
+        "CommonAttributes",
+        "ОбщиеРеквизиты"
+      ],
+      "xmlElementNames": [
+        "CommonAttribute"
+      ],
+      "reportPlural": "ОбщиеРеквизиты",
+      "whitelist": [
+        "@common",
+        "Тип",
+        "РежимПароля",
+        "Формат",
+        "ФорматРедактирования",
+        "Подсказка",
+        "ВыделятьОтрицательные",
+        "Маска",
+        "МногострочныйРежим",
+        "РасширенноеРедактирование",
+        "ЗаполнятьИзДанныхЗаполнения",
+        "ЗначениеЗаполнения",
+        "ПроверкаЗаполнения",
+        "ВыборГруппИЭлементов",
+        "СвязиПараметровВыбора",
+        "ПараметрыВыбора",
+        "БыстрыйВыбор",
+        "СозданиеПриВводе",
+        "ФормаВыбора",
+        "ИсторияВыбораПриВводе",
+        "Состав",
+        "АвтоИспользование",
+        "РазделениеДанных",
+        "ИспользованиеРазделяемыхДанных",
+        "ЗначениеРазделенияДанных",
+        "ИспользованиеРазделенияДанных",
+        "УсловноеРазделение",
+        "РазделениеПользователей",
+        "РазделениеАутентификации",
+        "РазделениеРасширенийКонфигурации",
+        "Индексирование",
+        "ПолнотекстовыйПоиск",
+        "ИсторияДанных"
+      ]
+    },
+    {
+      "typeKey": "command_group",
+      "folderNames": [
+        "CommandGroups",
+        "ГруппыКоманд"
+      ],
+      "xmlElementNames": [
+        "CommandGroup"
+      ],
+      "reportPlural": "ГруппыКоманд",
+      "whitelist": [
+        "@common",
+        "Отображение",
+        "Подсказка",
+        "Картинка",
+        "Категория"
+      ]
+    },
+    {
+      "typeKey": "chart_of_characteristic_types",
+      "folderNames": [
+        "ChartsOfCharacteristicTypes",
+        "ПланыВидовХарактеристик"
+      ],
+      "xmlElementNames": [
+        "ChartOfCharacteristicTypes"
+      ],
+      "reportPlural": "ПланыВидовХарактеристик",
+      "whitelist": [
+        "@common",
+        "ИспользоватьСтандартныеКоманды",
+        "ВключатьСправкуВСодержание",
+        "ДополнительныеЗначенияХарактеристик",
+        "Тип",
+        "Иерархический",
+        "ГруппыСверху",
+        "ДлинаКода",
+        "ДопустимаяДлинаКода",
+        "ДлинаНаименования",
+        "СерииКодов",
+        "ДопустимаяДлинаНомера",
+        "КонтрольУникальности",
+        "Автонумерация",
+        "ОсновноеПредставление",
+        "СтандартныеРеквизиты"
+      ],
+      "childCollections": [
+        "attributesWithBinaryStorage",
+        "tabularSections",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "chart_of_accounts",
+      "folderNames": [
+        "ChartsOfAccounts",
+        "ПланыСчетов"
+      ],
+      "xmlElementNames": [
+        "ChartOfAccounts"
+      ],
+      "reportPlural": "ПланыСчетов",
+      "whitelist": [
+        "@common",
+        "ИспользоватьСтандартныеКоманды",
+        "ВключатьСправкуВСодержание",
+        "ВводитсяНаОсновании",
+        "ВидыСубконто",
+        "МаксКоличествоСубконто",
+        "МаскаКода",
+        "ДлинаКода",
+        "ДлинаНаименования",
+        "СерииКодов",
+        "КонтрольУникальности",
+        "ОсновноеПредставление",
+        "СтандартныеРеквизиты",
+        "Характеристики",
+        "ОсновнаяФормаОбъекта",
+        "ОсновнаяФормаСписка",
+        "ОсновнаяФормаДляВыбора",
+        "ДополнительнаяФормаОбъекта",
+        "ДополнительнаяФормаСписка",
+        "Пояснение"
+      ],
+      "childCollections": [
+        "attributes",
+        "accountingFlags",
+        "extDimensionAccountingFlags",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "functional_option_parameter",
+      "folderNames": [
+        "FunctionalOptionsParameters",
+        "ПараметрыФункциональныхОпций"
+      ],
+      "xmlElementNames": [
+        "FunctionalOptionsParameter"
+      ],
+      "reportPlural": "ПараметрыФункциональныхОпций",
+      "whitelist": [
+        "@common",
+        "Тип",
+        "Использование"
+      ]
+    },
+    {
+      "typeKey": "document_journal",
+      "folderNames": [
+        "DocumentJournals",
+        "ЖурналыДокументов"
+      ],
+      "xmlElementNames": [
+        "DocumentJournal"
+      ],
+      "reportPlural": "ЖурналыДокументов",
+      "whitelist": [
+        "@common",
+        "ОсновнаяФорма",
+        "ДополнительнаяФорма",
+        "ИспользоватьСтандартныеКоманды",
+        "РегистрируемыеДокументы",
+        "ВключатьСправкуВСодержание",
+        "СтандартныеРеквизиты"
+      ],
+      "childCollections": [
+        "documentJournalColumns",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "business_process",
+      "folderNames": [
+        "BusinessProcesses",
+        "БизнесПроцессы"
+      ],
+      "xmlElementNames": [
+        "BusinessProcess"
+      ],
+      "reportPlural": "БизнесПроцессы",
+      "whitelist": [
+        "@common",
+        "ИспользоватьСтандартныеКоманды",
+        "СпособРедактирования",
+        "ВводПоСтроке",
+        "СозданиеПриВводе",
+        "СпособПоискаСтрокиПриВводеПоСтроке",
+        "РежимПолученияДанныхВыбораПриВводеПоСтроке",
+        "ПолнотекстовыйПоискПриВводеПоСтроке",
+        "ОсновнаяФормаОбъекта",
+        "ОсновнаяФормаСписка",
+        "ОсновнаяФормаДляВыбора",
+        "ДополнительнаяФормаОбъекта",
+        "ДополнительнаяФормаСписка",
+        "ДополнительнаяФормаДляВыбора",
+        "ИсторияВыбораПриВводе",
+        "ТипНомера",
+        "ДлинаНомера",
+        "ДопустимаяДлинаНомера",
+        "КонтрольУникальности",
+        "СтандартныеРеквизиты"
+      ],
+      "childCollections": [
+        "attributesWithBinaryStorage",
+        "tabularSections",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "task",
+      "folderNames": [
+        "Tasks",
+        "Задачи"
+      ],
+      "xmlElementNames": [
+        "Task"
+      ],
+      "reportPlural": "Задачи",
+      "whitelist": [
+        "@common",
+        "ИспользоватьСтандартныеКоманды",
+        "ТипНомера",
+        "ДлинаНомера",
+        "ДопустимаяДлинаНомера",
+        "КонтрольУникальности",
+        "Автонумерация",
+        "НомерЗадачиАвтоПрефикс",
+        "ДлинаНаименования",
+        "Адресация",
+        "ОсновнойРеквизитАдресации",
+        "ТекущийИсполнитель",
+        "ВводитсяНаОсновании",
+        "СтандартныеРеквизиты"
+      ],
+      "childCollections": [
+        "attributesWithBinaryStorage",
+        "addressingAttributes",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "filter_criterion",
+      "folderNames": [
+        "FilterCriteria",
+        "КритерииОтбора"
+      ],
+      "xmlElementNames": [
+        "FilterCriterion"
+      ],
+      "reportPlural": "КритерииОтбора",
+      "whitelist": [
+        "@common",
+        "Тип",
+        "ИспользоватьСтандартныеКоманды",
+        "Состав",
+        "ОсновнаяФорма",
+        "ДополнительнаяФорма",
+        "ПредставлениеСписка",
+        "РасширенноеПредставлениеСписка",
+        "Пояснение"
+      ],
+      "childCollections": [
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "settings_storage",
+      "folderNames": [
+        "SettingsStorages",
+        "ХранилищаНастроек"
+      ],
+      "xmlElementNames": [
+        "SettingsStorage"
+      ],
+      "reportPlural": "ХранилищаНастроек",
+      "whitelist": [
+        "@common",
+        "ОсновнаяФормаСохранения",
+        "ОсновнаяФормаЗагрузки",
+        "ДополнительнаяФормаСохранения",
+        "ДополнительнаяФормаЗагрузки"
+      ],
+      "childCollections": [
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "integration_service",
+      "folderNames": [
+        "IntegrationServices",
+        "СервисыИнтеграции"
+      ],
+      "xmlElementNames": [
+        "IntegrationService"
+      ],
+      "reportPlural": "СервисыИнтеграции",
+      "whitelist": [
+        "@common",
+        "АдресВнешнегоСервисаИнтеграции"
+      ],
+      "childCollections": [
+        "integrationServiceChannels"
+      ]
+    },
+    {
+      "typeKey": "role",
+      "folderNames": [
+        "Roles",
+        "Роли"
+      ],
+      "xmlElementNames": [
+        "Role"
+      ],
+      "reportPlural": "Роли",
+      "whitelist": [
+        "@common"
+      ]
+    },
+    {
+      "typeKey": "constant",
+      "folderNames": [
+        "Constants",
+        "Константы"
+      ],
+      "xmlElementNames": [
+        "Constant"
+      ],
+      "reportPlural": "Константы",
+      "whitelist": [
+        "@common",
+        "ИспользоватьСтандартныеКоманды",
+        "ДлинаКода",
+        "ДопустимаяДлинаКода",
+        "ДлинаНаименования",
+        "ОсновноеПредставление",
+        "СпособРедактирования",
+        "БыстрыйВыбор",
+        "СпособВыбора",
+        "ВводПоСтроке",
+        "СпособПоискаСтрокиПриВводеПоСтроке",
+        "ПолнотекстовыйПоискПриВводеПоСтроке",
+        "РежимПолученияДанныхВыбораПриВводеПоСтроке",
+        "ОсновнаяФормаОбъекта",
+        "ОсновнаяФормаСписка",
+        "ОсновнаяФормаДляВыбора",
+        "ДополнительнаяФормаОбъекта",
+        "ДополнительнаяФормаСписка",
+        "ДополнительнаяФормаДляВыбора",
+        "Характеристики",
+        "ВводитсяНаОсновании",
+        "РаспределеннаяИнформационнаяБаза",
+        "ВключатьРасширенияКонфигурации",
+        "СозданиеПриВводе",
+        "ИсторияВыбораПриВводе",
+        "ВключатьСправкуВСодержание",
+        "ПоляБлокировкиДанных",
+        "РежимУправленияБлокировкойДанных",
+        "ПолнотекстовыйПоиск",
+        "ПредставлениеОбъекта",
+        "РасширенноеПредставлениеОбъекта",
+        "ПредставлениеСписка",
+        "РасширенноеПредставлениеСписка",
+        "Пояснение",
+        "ИсторияДанных",
+        "ОбновлятьИсториюДанныхСразуПослеЗаписи",
+        "ВыполнятьОбработкуПослеЗаписиВерсииИсторииДанных"
+      ],
+      "childCollections": [
+        "attributes",
+        "tabularSections",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "exchange_plan",
+      "folderNames": [
+        "ExchangePlans",
+        "ПланыОбмена"
+      ],
+      "xmlElementNames": [
+        "ExchangePlan"
+      ],
+      "reportPlural": "ПланыОбмена",
+      "whitelist": [
+        "@common",
+        "ИспользоватьСтандартныеКоманды",
+        "ДлинаКода",
+        "ДопустимаяДлинаКода",
+        "ДлинаНаименования",
+        "ОсновноеПредставление",
+        "СпособРедактирования",
+        "БыстрыйВыбор",
+        "СпособВыбора",
+        "ВводПоСтроке",
+        "СпособПоискаСтрокиПриВводеПоСтроке",
+        "ПолнотекстовыйПоискПриВводеПоСтроке",
+        "РежимПолученияДанныхВыбораПриВводеПоСтроке",
+        "ОсновнаяФормаОбъекта",
+        "ОсновнаяФормаСписка",
+        "ОсновнаяФормаДляВыбора",
+        "ДополнительнаяФормаОбъекта",
+        "ДополнительнаяФормаСписка",
+        "ДополнительнаяФормаДляВыбора",
+        "СтандартныеРеквизиты",
+        "Характеристики",
+        "ВводитсяНаОсновании",
+        "РаспределеннаяИнформационнаяБаза",
+        "ВключатьРасширенияКонфигурации",
+        "СозданиеПриВводе",
+        "ИсторияВыбораПриВводе",
+        "ВключатьСправкуВСодержание",
+        "ПоляБлокировкиДанных",
+        "РежимУправленияБлокировкойДанных",
+        "ПолнотекстовыйПоиск",
+        "ПредставлениеОбъекта",
+        "РасширенноеПредставлениеОбъекта",
+        "ПредставлениеСписка",
+        "РасширенноеПредставлениеСписка",
+        "Пояснение",
+        "ИсторияДанных",
+        "ОбновлятьИсториюДанныхСразуПослеЗаписи",
+        "ВыполнятьОбработкуПослеЗаписиВерсииИсторииДанных"
+      ],
+      "childCollections": [
+        "attributesWithBinaryStorage",
+        "tabularSections",
+        "forms",
+        "commands",
+        "templates"
+      ]
+    },
+    {
+      "typeKey": "defined_type",
+      "folderNames": [
+        "DefinedTypes",
+        "ОпределяемыеТипы"
+      ],
+      "xmlElementNames": [
+        "DefinedType"
+      ],
+      "reportPlural": "ОпределяемыеТипы",
+      "whitelist": [
+        "@common",
+        "Тип",
+        "ИмяМетода",
+        "Наименование",
+        "Ключ",
+        "Использование",
+        "Предопределенное",
+        "КоличествоПовторовПриАварийномЗавершении",
+        "ИнтервалПовтораПриАварийномЗавершении"
+      ],
+      "fallbackEnabled": true
+    },
+    {
+      "typeKey": "functional_option",
+      "folderNames": [
+        "FunctionalOptions",
+        "ФункциональныеОпции"
+      ],
+      "xmlElementNames": [
+        "FunctionalOption"
+      ],
+      "reportPlural": "ФункциональныеОпции",
+      "whitelist": [
+        "@common",
+        "Хранение",
+        "ПривилегированныйРежимПриПолучении",
+        "Состав"
+      ],
+      "fallbackEnabled": true
+    },
+    {
+      "typeKey": "common_form",
+      "folderNames": [
+        "CommonForms",
+        "ОбщиеФормы"
+      ],
+      "xmlElementNames": [
+        "CommonForm"
+      ],
+      "reportPlural": "ОбщиеФормы",
+      "whitelist": [
+        "@common"
+      ],
+      "fallbackEnabled": true
+    },
+    {
+      "typeKey": "common_command",
+      "folderNames": [
+        "CommonCommands",
+        "ОбщиеКоманды"
+      ],
+      "xmlElementNames": [
+        "CommonCommand"
+      ],
+      "reportPlural": "ОбщиеКоманды",
+      "whitelist": [
+        "@common"
+      ],
+      "fallbackEnabled": true
+    },
+    {
+      "typeKey": "common_picture",
+      "folderNames": [
+        "CommonPictures",
+        "ОбщиеКартинки"
+      ],
+      "xmlElementNames": [
+        "CommonPicture"
+      ],
+      "reportPlural": "ОбщиеКартинки",
+      "whitelist": [
+        "@common"
+      ],
+      "fallbackEnabled": true
+    },
+    {
+      "typeKey": "scheduled_job",
+      "folderNames": [
+        "ScheduledJobs",
+        "РегламентныеЗадания"
+      ],
+      "xmlElementNames": [
+        "ScheduledJob"
+      ],
+      "reportPlural": "РегламентныеЗадания",
+      "whitelist": [
+        "@common",
+        "Тип",
+        "ИмяМетода",
+        "Наименование",
+        "Ключ",
+        "Использование",
+        "Предопределенное",
+        "КоличествоПовторовПриАварийномЗавершении",
+        "ИнтервалПовтораПриАварийномЗавершении"
+      ],
+      "fallbackEnabled": true
+    },
+    {
+      "typeKey": "language",
+      "folderNames": [
+        "Languages",
+        "Языки"
+      ],
+      "xmlElementNames": [
+        "Language"
+      ],
+      "reportPlural": "Языки",
+      "whitelist": [
+        "@common",
+        "КодЯзыка"
+      ],
+      "fallbackEnabled": true
+    }
+  ]
+}

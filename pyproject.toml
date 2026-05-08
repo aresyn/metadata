@@ -1,0 +1,9 @@
+[project]
+name = "generate-config-report"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+generate-config-report = "generate_config_report.cli:main"
+generate-config-report-build-overrides = "generate_config_report.build_xml_overrides:main"
