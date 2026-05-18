@@ -20,10 +20,11 @@ class ConfigReadError(ConfigError):
 class ProjectConfig:
     project: str
     repo_path: Path
-    main_config_path: Path
+    main_config_path: Path | None
     output_path: Path
     report_file_name: str
-    extension_path: Path = Path("src/cfe")
+    main_config_required: bool = True
+    extension_path: Path | None = Path("src/cfe")
     extension_required: bool = False
     diagnostics_path: Path | None = None
     logs_path: Path | None = None
@@ -33,11 +34,11 @@ class ProjectConfig:
     warnings_as_errors: bool = False
 
     @property
-    def main_config_dir(self) -> Path:
+    def main_config_dir(self) -> Path | None:
         return _join_if_relative(self.repo_path, self.main_config_path)
 
     @property
-    def extension_dir(self) -> Path:
+    def extension_dir(self) -> Path | None:
         return _join_if_relative(self.repo_path, self.extension_path)
 
     @property
@@ -53,10 +54,20 @@ def load_config(path: Path, *, strict: bool = False) -> ProjectConfig:
     except json.JSONDecodeError as exc:
         raise ConfigReadError(f"Cannot parse config JSON: {path}") from exc
 
-    required = ("project", "repoPath", "mainConfigPath", "outputPath", "reportFileName")
+    required = ("project", "repoPath", "outputPath", "reportFileName")
     missing = [name for name in required if not raw.get(name)]
+    main_config_required = bool(raw.get("mainConfigRequired", True))
+    extension_required = bool(raw.get("extensionRequired", False))
+    main_config_path = _optional_path(raw.get("mainConfigPath"))
+    extension_path = _optional_path(raw.get("extensionPath", "src/cfe"))
+    if main_config_required and main_config_path is None:
+        missing.append("mainConfigPath")
+    if extension_required and extension_path is None:
+        missing.append("extensionPath")
     if missing:
         raise ConfigError(f"Missing required config fields: {', '.join(missing)}")
+    if main_config_path is None and extension_path is None:
+        raise ConfigError("At least one metadata source path must be configured: mainConfigPath or extensionPath")
 
     generator_settings_path = _optional_path(raw.get("generatorSettingsPath"))
     build_xml_overrides = bool(raw.get("buildXmlOverrides", False))
@@ -73,9 +84,10 @@ def load_config(path: Path, *, strict: bool = False) -> ProjectConfig:
     return ProjectConfig(
         project=str(raw["project"]),
         repo_path=Path(str(raw["repoPath"])).expanduser(),
-        main_config_path=Path(str(raw["mainConfigPath"])),
-        extension_path=Path(str(raw.get("extensionPath", "src/cfe"))),
-        extension_required=bool(raw.get("extensionRequired", False)),
+        main_config_path=main_config_path,
+        main_config_required=main_config_required,
+        extension_path=extension_path,
+        extension_required=extension_required,
         output_path=Path(str(raw["outputPath"])).expanduser(),
         report_file_name=str(raw["reportFileName"]),
         diagnostics_path=diagnostics_path,
@@ -93,7 +105,9 @@ def _optional_path(value: Any) -> Path | None:
     return Path(str(value)).expanduser()
 
 
-def _join_if_relative(base: Path, path: Path) -> Path:
+def _join_if_relative(base: Path, path: Path | None) -> Path | None:
+    if path is None:
+        return None
     if path.is_absolute():
         return path
     return base / path

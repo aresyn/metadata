@@ -22,7 +22,9 @@ class DiagnosticEvent:
 @dataclass(slots=True)
 class ReportStats:
     project: str
-    mainConfigPath: str
+    mainConfigPath: str | None
+    mainConfigFound: bool
+    mainConfigRequired: bool
     extensionPath: str | None
     extensionFound: bool
     extensionRequired: bool

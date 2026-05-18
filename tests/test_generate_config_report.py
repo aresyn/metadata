@@ -12,6 +12,7 @@ from generate_config_report.build_xml_overrides import (
     collect_standard_attribute_keep_empty_overrides,
 )
 from generate_config_report.cli import main
+from generate_config_report.config import ConfigError, load_config
 from generate_config_report.diagnostics import Diagnostics
 from generate_config_report.metadata_model import MetadataObject, MetadataSection, ReportProperty
 from generate_config_report.property_extractors import (
@@ -208,6 +209,101 @@ class ReportWriterTests(unittest.TestCase):
 
 
 class GeneratorIntegrationTests(unittest.TestCase):
+    def test_main_only_configuration_succeeds_when_extension_is_disabled(self) -> None:
+        TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
+            root = Path(tmp)
+            repo = root / "repo"
+            cf = repo / "src" / "cf"
+            docs = cf / "Documents"
+            docs.mkdir(parents=True)
+            forms = docs / "Р—Р°РєР°Р·" / "Forms"
+            forms.mkdir(parents=True)
+            (cf / "Configuration.xml").write_text(CONFIGURATION_XML, encoding="utf-8")
+            (docs / "Р—Р°РєР°Р·.xml").write_text(DOCUMENT_XML, encoding="utf-8")
+            (forms / "Р¤РѕСЂРјР°Р’С‹Р±РѕСЂР°.xml").write_text(FORM_XML.format(name="Р¤РѕСЂРјР°Р’С‹Р±РѕСЂР°"), encoding="utf-8")
+            (forms / "Р¤РѕСЂРјР°Р”РѕРєСѓРјРµРЅС‚Р°.xml").write_text(FORM_XML.format(name="Р¤РѕСЂРјР°Р”РѕРєСѓРјРµРЅС‚Р°"), encoding="utf-8")
+
+            output = root / "metadata"
+            diagnostics = root / "diagnostics"
+            logs = root / "logs"
+            config = root / "config.json"
+            config.write_text(
+                json.dumps(
+                    {
+                        "project": "test",
+                        "repoPath": str(repo),
+                        "mainConfigPath": "src/cf",
+                        "extensionPath": "",
+                        "extensionRequired": False,
+                        "outputPath": str(output),
+                        "reportFileName": "Report.txt",
+                        "diagnosticsPath": str(diagnostics),
+                        "logsPath": str(logs),
+                        "encoding": "utf-8",
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            logging.shutdown()
+            logging.getLogger().handlers.clear()
+            exit_code = main(["--config", str(config)])
+
+            self.assertEqual(exit_code, 0)
+            report = (output / "Report.txt").read_text(encoding="utf-8")
+            self.assertTrue(report.startswith("\t- "))
+            self.assertNotIn("\n\n\t- ", report)
+            stats = json.loads((diagnostics / "report-stats.json").read_text(encoding="utf-8"))
+            self.assertTrue(stats["mainConfigFound"])
+            self.assertFalse(stats["extensionFound"])
+
+    def test_extension_only_configuration_succeeds_when_main_is_disabled(self) -> None:
+        TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
+            root = Path(tmp)
+            repo = root / "repo"
+            cfe = repo / "src" / "cfe"
+            cfe.mkdir(parents=True)
+            (cfe / "Configuration.xml").write_text(EXTENSION_CONFIGURATION_WITH_ADOPTED_DOCUMENT_XML, encoding="utf-8")
+
+            output = root / "metadata"
+            diagnostics = root / "diagnostics"
+            logs = root / "logs"
+            config = root / "config.json"
+            config.write_text(
+                json.dumps(
+                    {
+                        "project": "test",
+                        "repoPath": str(repo),
+                        "mainConfigPath": "",
+                        "mainConfigRequired": False,
+                        "extensionPath": "src/cfe",
+                        "extensionRequired": False,
+                        "outputPath": str(output),
+                        "reportFileName": "Report.txt",
+                        "diagnosticsPath": str(diagnostics),
+                        "logsPath": str(logs),
+                        "encoding": "utf-8",
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            logging.shutdown()
+            logging.getLogger().handlers.clear()
+            exit_code = main(["--config", str(config)])
+
+            self.assertEqual(exit_code, 0)
+            report = (output / "Report.txt").read_text(encoding="utf-8")
+            self.assertTrue(report.startswith("\t- "))
+            self.assertNotIn("\n\n\t- ", report)
+            stats = json.loads((diagnostics / "report-stats.json").read_text(encoding="utf-8"))
+            self.assertFalse(stats["mainConfigFound"])
+            self.assertTrue(stats["extensionFound"])
+
     def test_minimal_configuration_generates_report(self) -> None:
         TEMP_ROOT.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
@@ -377,6 +473,72 @@ class GeneratorIntegrationTests(unittest.TestCase):
             self.assertEqual(report.count(type_string_line), 1)
             self.assertIn(hierarchical_false_line, report)
             self.assertIn(adopted_line, report)
+
+    def test_generator_fails_when_no_source_directories_are_available(self) -> None:
+        TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
+            root = Path(tmp)
+            repo = root / "repo"
+            repo.mkdir(parents=True)
+
+            output = root / "metadata"
+            diagnostics = root / "diagnostics"
+            logs = root / "logs"
+            config = root / "config.json"
+            config.write_text(
+                json.dumps(
+                    {
+                        "project": "test",
+                        "repoPath": str(repo),
+                        "mainConfigPath": "src/cf",
+                        "mainConfigRequired": False,
+                        "extensionPath": "src/cfe",
+                        "extensionRequired": False,
+                        "outputPath": str(output),
+                        "reportFileName": "Report.txt",
+                        "diagnosticsPath": str(diagnostics),
+                        "logsPath": str(logs),
+                        "encoding": "utf-8",
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            logging.shutdown()
+            logging.getLogger().handlers.clear()
+            exit_code = main(["--config", str(config)])
+
+            self.assertEqual(exit_code, 9)
+            diagnostics_data = json.loads((diagnostics / "report-diagnostics.json").read_text(encoding="utf-8"))
+            self.assertTrue(any(item["code"] == "noMetadataSources" for item in diagnostics_data["errors"]))
+
+
+class ConfigTests(unittest.TestCase):
+    def test_load_config_requires_at_least_one_metadata_source_path(self) -> None:
+        TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
+            root = Path(tmp)
+            config = root / "config.json"
+            config.write_text(
+                json.dumps(
+                    {
+                        "project": "test",
+                        "repoPath": str(root / "repo"),
+                        "mainConfigPath": "",
+                        "mainConfigRequired": False,
+                        "extensionPath": "",
+                        "extensionRequired": False,
+                        "outputPath": str(root / "metadata"),
+                        "reportFileName": "Report.txt",
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ConfigError, "At least one metadata source path must be configured"):
+                load_config(config)
 
 
 class SettingsAndOverridesTests(unittest.TestCase):

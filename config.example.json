@@ -2,6 +2,7 @@
   "project": "my-project",
   "repoPath": "C:/path/to/project",
   "mainConfigPath": "src/cf",
+  "mainConfigRequired": true,
   "extensionPath": "src/cfe",
   "extensionRequired": false,
   "outputPath": "C:/path/to/output/metadata",

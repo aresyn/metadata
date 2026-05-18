@@ -813,3 +813,111 @@ Acceptance checks:
 ## 20. Открытые вопросы
 
 Открытых вопросов по PRD на момент подготовки dev spec нет.
+
+## 21. Addendum: Source Model Update 2026-05-12
+
+Этот addendum заменяет прежние пункты dev spec, где `mainConfigPath` трактовался как безусловно обязательный.
+
+Актуальная модель источников:
+
+```text
+- generator читает основную конфигурацию из mainConfigPath и/или одно расширение из extensionPath;
+- mainConfigRequired управляет обязательностью основного источника;
+- extensionRequired управляет обязательностью источника расширения;
+- mainConfigPath и extensionPath могут быть отключены пустой строкой;
+- хотя бы один путь источника должен быть задан в config;
+- для успешного запуска должен существовать хотя бы один каталог источника;
+- если после проверки не найден ни один каталог источника, generator завершает запуск с exit code 9.
+```
+
+Актуальный config contract:
+
+```python
+@dataclass(frozen=True)
+class ProjectConfig:
+    project: str
+    repo_path: Path
+    main_config_path: Path | None
+    output_path: Path
+    report_file_name: str
+    main_config_required: bool = True
+    extension_path: Path | None = Path("src/cfe")
+    extension_required: bool = False
+    diagnostics_path: Path | None = None
+    logs_path: Path | None = None
+    generator_settings_path: Path | None = None
+    encoding: str = "utf-8"
+    warnings_as_errors: bool = False
+```
+
+Актуальные правила config и runtime:
+
+```text
+- обязательные параметры: project, repoPath, outputPath, reportFileName;
+- mainConfigPath optional, но обязателен при mainConfigRequired=true;
+- extensionPath optional, но обязателен при extensionRequired=true;
+- mainConfigRequired default true;
+- extensionRequired default false;
+- если mainConfigRequired=true и основной источник не сконфигурирован или не найден -> exit 4;
+- если mainConfigRequired=false и основной источник не найден -> warning mainConfigMissing;
+- если extensionRequired=true и источник расширения не сконфигурирован или не найден -> exit 7;
+- если extensionRequired=false и источник расширения не найден -> warning extensionMissing;
+- если доступны оба источника, они выводятся двумя отдельными корневыми секциями;
+- если доступен только один источник, Report.txt формируется только по нему.
+```
+
+Актуальные source-related diagnostics:
+
+```text
+mainConfigPathMissing
+mainConfigMissing
+extensionMissing
+extensionRequiredMissing
+noMetadataSources
+```
+
+Актуальный пример `report-stats.json`:
+
+```json
+{
+  "project": "orders",
+  "mainConfigPath": "src/cf",
+  "mainConfigFound": true,
+  "mainConfigRequired": true,
+  "extensionPath": "src/cfe",
+  "extensionFound": false,
+  "extensionRequired": false,
+  "generatedAt": "2026-05-06T12:00:00",
+  "mainConfigurationObjects": 12500,
+  "extensionObjects": 0,
+  "objectsByType": {},
+  "warnings": 1,
+  "warningEvents": 1,
+  "warningGroups": 1,
+  "errors": 0
+}
+```
+
+Актуальные exit codes:
+
+```text
+0 — Report.txt успешно сформирован, warnings нет.
+1 — Report.txt сформирован, есть warnings.
+2 — warningsAsErrors=true или передан --strict, и есть warnings warning-класса.
+3 — неверные параметры запуска.
+4 — mainConfigRequired=true и основной источник не сконфигурирован или не найден.
+5 — не найдено ни одного объекта метаданных после чтения доступных источников.
+6 — ошибка записи Report.txt.
+7 — extensionRequired=true и источник расширения не сконфигурирован или не найден.
+8 — ошибка чтения config-файла.
+9 — не найден ни один каталог источника метаданных.
+```
+
+Дополнительные тесты для этой модели:
+
+```text
+test_main_only_configuration_succeeds_when_extension_is_disabled
+test_extension_only_configuration_succeeds_when_main_is_disabled
+test_generator_fails_when_no_source_directories_are_available
+test_load_config_requires_at_least_one_metadata_source_path
+```

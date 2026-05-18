@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import logging
 from copy import deepcopy
-from dataclasses import replace
-from pathlib import Path
 
 from .config import ProjectConfig
 from .diagnostics import Diagnostics, ReportStats, utc_timestamp, write_stats
@@ -23,6 +21,7 @@ EXIT_NO_OBJECTS = 5
 EXIT_REPORT_WRITE_ERROR = 6
 EXIT_EXTENSION_REQUIRED_MISSING = 7
 EXIT_CONFIG_READ_ERROR = 8
+EXIT_NO_SOURCES = 9
 
 
 class Generator:
@@ -34,26 +33,51 @@ class Generator:
         self.logger = logging.getLogger(__name__)
 
     def run(self) -> int:
-        if not self.config.main_config_dir.is_dir():
-            self.diagnostics.error("mainConfigPathMissing", "Main configuration path not found", self.config.main_config_dir)
-            self._write_diagnostics_only(extension_found=False)
+        main_config_dir = self.config.main_config_dir
+        extension_dir = self.config.extension_dir
+        main_found = False
+        if main_config_dir is None:
+            if self.config.main_config_required:
+                self.diagnostics.error("mainConfigPathMissing", "Main configuration path is not configured and mainConfigRequired=true")
+                self._write_diagnostics_only(main_found=False, extension_found=False)
+                return EXIT_MAIN_PATH_MISSING
+        elif main_config_dir.is_dir():
+            main_found = True
+        elif self.config.main_config_required:
+            self.diagnostics.error("mainConfigPathMissing", "Main configuration path not found", main_config_dir)
+            self._write_diagnostics_only(main_found=False, extension_found=False)
             return EXIT_MAIN_PATH_MISSING
+        else:
+            self.diagnostics.warning("mainConfigMissing", "Main configuration path not found and mainConfigRequired=false", main_config_dir)
 
-        extension_found = self.config.extension_dir.is_dir()
-        if not extension_found:
+        extension_found = False
+        if extension_dir is None:
             if self.config.extension_required:
-                self.diagnostics.error("extensionRequiredMissing", "Extension path not found and extensionRequired=true", self.config.extension_dir)
-                self._write_diagnostics_only(extension_found=False)
+                self.diagnostics.error("extensionRequiredMissing", "Extension path is not configured and extensionRequired=true")
+                self._write_diagnostics_only(main_found=main_found, extension_found=False)
                 return EXIT_EXTENSION_REQUIRED_MISSING
-            self.diagnostics.warning("extensionMissing", "Extension path not found and extensionRequired=false", self.config.extension_dir)
+        elif extension_dir.is_dir():
+            extension_found = True
+        elif self.config.extension_required:
+            self.diagnostics.error("extensionRequiredMissing", "Extension path not found and extensionRequired=true", extension_dir)
+            self._write_diagnostics_only(main_found=main_found, extension_found=False)
+            return EXIT_EXTENSION_REQUIRED_MISSING
+        else:
+            self.diagnostics.warning("extensionMissing", "Extension path not found and extensionRequired=false", extension_dir)
+
+        if not main_found and not extension_found:
+            self.diagnostics.error("noMetadataSources", "No metadata source directories found")
+            self._write_diagnostics_only(main_found=False, extension_found=False)
+            return EXIT_NO_SOURCES
 
         reader = XmlReader(self.diagnostics, self.settings)
         sections: list[MetadataSection] = []
-        main_section = reader.read_section(self.config.main_config_dir, "main")
-        if main_section is not None:
-            sections.append(main_section)
-        if extension_found:
-            extension_section = reader.read_section(self.config.extension_dir, "extension")
+        if main_found and main_config_dir is not None:
+            main_section = reader.read_section(main_config_dir, "main")
+            if main_section is not None:
+                sections.append(main_section)
+        if extension_found and extension_dir is not None:
+            extension_section = reader.read_section(extension_dir, "extension")
             if extension_section is not None:
                 sections.append(extension_section)
         self._apply_extension_inheritance(sections)
@@ -61,7 +85,7 @@ class Generator:
         object_count = sum(count_objects(section.root) for section in sections)
         if object_count == 0:
             self.diagnostics.error("noMetadataObjects", "No metadata objects found")
-            self._write_diagnostics_only(extension_found=extension_found)
+            self._write_diagnostics_only(main_found=main_found, extension_found=extension_found)
             return EXIT_NO_OBJECTS
 
         if not self.dry_run:
@@ -69,10 +93,10 @@ class Generator:
                 self._write_report(sections)
             except OSError as exc:
                 self.diagnostics.error("reportWriteError", f"Cannot write Report.txt: {exc}", self.config.report_path)
-                self._write_diagnostics_only(extension_found=extension_found, sections=sections)
+                self._write_diagnostics_only(main_found=main_found, extension_found=extension_found, sections=sections)
                 return EXIT_REPORT_WRITE_ERROR
 
-        self._write_diagnostics_only(extension_found=extension_found, sections=sections)
+        self._write_diagnostics_only(main_found=main_found, extension_found=extension_found, sections=sections)
         return self._warning_aware_exit_code()
 
     def _write_report(self, sections: list[MetadataSection]) -> None:
@@ -105,15 +129,23 @@ class Generator:
             _inherit_properties(extension_obj, main_obj, self.settings.extension_inherited_property_names)
             _force_empty_properties(extension_obj, main_obj, self.settings.extension_adopted_empty_property_names)
 
-    def _write_diagnostics_only(self, *, extension_found: bool, sections: list[MetadataSection] | None = None) -> None:
+    def _write_diagnostics_only(
+        self,
+        *,
+        main_found: bool,
+        extension_found: bool,
+        sections: list[MetadataSection] | None = None,
+    ) -> None:
         diagnostics_path = self.config.diagnostics_path
         if diagnostics_path is None:
             return
         sections = sections or []
         stats = ReportStats(
             project=self.config.project,
-            mainConfigPath=str(self.config.main_config_path),
-            extensionPath=str(self.config.extension_path) if self.config.extension_path else None,
+            mainConfigPath=str(self.config.main_config_path) if self.config.main_config_path is not None else None,
+            mainConfigFound=main_found,
+            mainConfigRequired=self.config.main_config_required,
+            extensionPath=str(self.config.extension_path) if self.config.extension_path is not None else None,
             extensionFound=extension_found,
             extensionRequired=self.config.extension_required,
             generatedAt=utc_timestamp(),

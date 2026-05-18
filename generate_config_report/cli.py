@@ -46,8 +46,8 @@ def main(argv: list[str] | None = None) -> int:
     settings = load_settings(generator_settings_path)
     diagnostics = Diagnostics(config.project)
     logging.info("Starting Report.txt generation for project %s", config.project)
-    logging.info("Main configuration path: %s", config.main_config_dir)
-    logging.info("Extension path: %s", config.extension_dir)
+    logging.info("Main configuration path: %s", config.main_config_dir if config.main_config_dir is not None else "disabled")
+    logging.info("Extension path: %s", config.extension_dir if config.extension_dir is not None else "disabled")
     if config.build_xml_overrides:
         logging.info("XML overrides generated at: %s", generator_settings_path)
     try:
@@ -57,6 +57,7 @@ def main(argv: list[str] | None = None) -> int:
             main_config_path=config.main_config_path,
             output_path=config.output_path,
             report_file_name=config.report_file_name,
+            main_config_required=config.main_config_required,
             extension_path=config.extension_path,
             extension_required=config.extension_required,
             diagnostics_path=config.diagnostics_path,

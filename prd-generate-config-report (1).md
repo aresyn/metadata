@@ -1957,3 +1957,133 @@ Exit codes закреплены в PRD.
 MVP запускается как Python-скрипт `generate_config_report.py --config ...`; installable CLI entry point `generate-config-report` описан в `pyproject.toml` и использует тот же CLI-слой.
 
 `Report.txt` используется только для `metadatasearch` в MCP. Поиск по BSL-коду остается задачей `codesearch` через `CODE_PATH`.
+
+## 24. Addendum: Source Model Update 2026-05-12
+
+Этот addendum заменяет прежние пункты PRD, где основная конфигурация считалась безусловно обязательной.
+
+Актуальная модель источников:
+
+```text
+- generator читает основную конфигурацию из mainConfigPath и/или одно расширение из extensionPath;
+- mainConfigRequired управляет обязательностью основного источника;
+- extensionRequired управляет обязательностью источника расширения;
+- mainConfigPath и extensionPath могут быть отключены пустой строкой;
+- хотя бы один путь источника должен быть задан;
+- хотя бы один каталог источника должен существовать на момент запуска;
+- если доступен только один источник, Report.txt формируется только по нему;
+- если доступны оба источника, они выводятся отдельными корневыми секциями;
+- если оба источника недоступны, запуск завершается ошибкой с exit code 9.
+```
+
+Актуальный пример project config:
+
+```json
+{
+  "project": "orders",
+  "repoPath": "E:/mcp-1c/repos/orders",
+  "mainConfigPath": "src/cf",
+  "mainConfigRequired": true,
+  "extensionPath": "src/cfe",
+  "extensionRequired": false,
+  "outputPath": "E:/mcp-1c/staging/orders/current/metadata",
+  "reportFileName": "Report.txt",
+  "diagnosticsPath": "E:/mcp-1c/staging/orders/current/diagnostics",
+  "logsPath": "E:/mcp-1c/staging/orders/current/logs",
+  "encoding": "utf-8",
+  "generatorSettingsPath": "E:/mcp-1c/projects/orders-generator-settings.json",
+  "warningsAsErrors": false
+}
+```
+
+Актуальные правила входных параметров:
+
+```text
+Обязательные:
+project
+repoPath
+outputPath
+reportFileName
+
+Опциональные:
+mainConfigPath
+mainConfigRequired
+extensionPath
+extensionRequired
+diagnosticsPath
+logsPath
+encoding
+generatorSettingsPath
+warningsAsErrors
+```
+
+Правила source validation:
+
+```text
+- если mainConfigRequired=true и mainConfigPath не задан или каталог не найден -> exit 4;
+- если mainConfigRequired=false и каталог mainConfigPath не найден -> warning;
+- если extensionRequired=true и extensionPath не задан или каталог не найден -> exit 7;
+- если extensionRequired=false и каталог extensionPath не найден -> warning;
+- если после проверки не найден ни один каталог источника -> error noMetadataSources, exit 9.
+```
+
+Актуальный пример `report-stats.json`:
+
+```json
+{
+  "project": "orders",
+  "mainConfigPath": "src/cf",
+  "mainConfigFound": true,
+  "mainConfigRequired": true,
+  "extensionPath": "src/cfe",
+  "extensionFound": false,
+  "extensionRequired": false,
+  "generatedAt": "2026-05-06T12:00:00",
+  "mainConfigurationObjects": 12500,
+  "extensionObjects": 0,
+  "objectsByType": {
+    "Documents": 120,
+    "Catalogs": 180,
+    "CommonModules": 900,
+    "InformationRegisters": 240
+  },
+  "warnings": 1,
+  "warningEvents": 1,
+  "warningGroups": 1,
+  "errors": 0
+}
+```
+
+Актуальные source-related diagnostics:
+
+```text
+mainConfigPathMissing
+mainConfigMissing
+extensionMissing
+extensionRequiredMissing
+noMetadataSources
+```
+
+Актуальные exit codes:
+
+```text
+0 — Report.txt успешно сформирован, warnings нет.
+1 — Report.txt сформирован, есть warnings.
+2 — warningsAsErrors=true или передан --strict, и есть warnings warning-класса.
+3 — неверные параметры запуска.
+4 — mainConfigRequired=true и основной источник не сконфигурирован или не найден.
+5 — не найдено ни одного объекта метаданных после чтения доступных источников.
+6 — ошибка записи Report.txt.
+7 — extensionRequired=true и источник расширения не сконфигурирован или не найден.
+8 — ошибка чтения config-файла.
+9 — не найден ни один каталог источника метаданных.
+```
+
+Дополнительные acceptance criteria:
+
+```text
+1. Если доступна только основная конфигурация, Report.txt успешно формируется только по ней.
+2. Если доступно только расширение и mainConfigRequired=false, Report.txt успешно формируется только по расширению.
+3. Если доступны оба источника, они выводятся двумя отдельными корневыми секциями.
+4. Если оба источника необязательны, но оба каталога отсутствуют, успешный результат не формируется, exit code = 9.
+```

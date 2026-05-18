@@ -48,6 +48,7 @@ tests/
   "project": "orders",
   "repoPath": "C:/im/Devops/Codemetadata/orders",
   "mainConfigPath": "src/cf",
+  "mainConfigRequired": true,
   "extensionPath": "src/cfe",
   "extensionRequired": false,
   "outputPath": "C:/tmp/generate-config-report-orders/metadata",
@@ -92,7 +93,6 @@ C:\tmp\generate-config-report-orders\logs\generate-config-report-<timestamp>.log
 ```text
 project
 repoPath
-mainConfigPath
 outputPath
 reportFileName
 ```
@@ -100,6 +100,8 @@ reportFileName
 Необязательные поля:
 
 ```text
+mainConfigPath
+mainConfigRequired
 extensionPath
 extensionRequired
 diagnosticsPath
@@ -109,6 +111,14 @@ warningsAsErrors
 buildXmlOverrides
 generatorSettingsPath
 ```
+
+Правила источников:
+
+- `mainConfigPath` и `extensionPath` можно отключить, передав пустую строку.
+- `mainConfigRequired=true` требует существующий каталог основной конфигурации.
+- `extensionRequired=true` требует существующий каталог расширения.
+- Хотя бы один источник должен быть сконфигурирован.
+- На этапе запуска должен быть найден хотя бы один каталог источника, иначе генератор завершится ошибкой.
 
 `generatorSettingsPath` работает как overlay поверх встроенных defaults, а не как полная замена файла настроек.
 

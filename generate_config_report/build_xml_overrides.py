@@ -18,8 +18,8 @@ from .settings import GeneratorSettings, load_settings
 
 def build_xml_overrides(
     repo_path: Path,
-    main_config_path: str | Path,
-    extension_path: str | Path,
+    main_config_path: str | Path | None,
+    extension_path: str | Path | None,
     output_path: Path,
     generator_settings_path: Path | None = None,
 ) -> Path:
@@ -29,14 +29,16 @@ def build_xml_overrides(
     repo_path = repo_path.expanduser()
     output_path = output_path.expanduser()
 
+    main_config_dir = _resolve_source_dir(repo_path, main_config_path)
+    extension_dir = _resolve_source_dir(repo_path, extension_path)
     pairs = collect_standard_attribute_keep_empty_overrides(
-        repo_path / Path(main_config_path),
-        repo_path / Path(extension_path),
+        main_config_dir,
+        extension_dir,
         settings,
     )
     keep_default_triplets = collect_standard_attribute_keep_default_overrides(
-        repo_path / Path(main_config_path),
-        repo_path / Path(extension_path),
+        main_config_dir,
+        extension_dir,
         settings,
     )
     output = {
@@ -68,29 +70,40 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def collect_standard_attribute_keep_empty_overrides(
-    main_config_dir: Path,
-    extension_dir: Path,
+    main_config_dir: Path | None,
+    extension_dir: Path | None,
     settings: GeneratorSettings,
 ) -> list[str]:
     configure_extractor(settings)
     pairs: set[str] = set()
-    pairs.update(_collect_catalog_pairs(main_config_dir, settings))
-    if extension_dir.is_dir():
+    if main_config_dir is not None and main_config_dir.is_dir():
+        pairs.update(_collect_catalog_pairs(main_config_dir, settings))
+    if extension_dir is not None and extension_dir.is_dir():
         pairs.update(_collect_catalog_pairs(extension_dir, settings))
     return sorted(pairs)
 
 
 def collect_standard_attribute_keep_default_overrides(
-    main_config_dir: Path,
-    extension_dir: Path,
+    main_config_dir: Path | None,
+    extension_dir: Path | None,
     settings: GeneratorSettings,
 ) -> list[str]:
     configure_extractor(settings)
     pairs: set[str] = set()
-    pairs.update(_collect_catalog_default_pairs(main_config_dir, settings))
-    if extension_dir.is_dir():
+    if main_config_dir is not None and main_config_dir.is_dir():
+        pairs.update(_collect_catalog_default_pairs(main_config_dir, settings))
+    if extension_dir is not None and extension_dir.is_dir():
         pairs.update(_collect_catalog_default_pairs(extension_dir, settings))
     return sorted(pairs)
+
+
+def _resolve_source_dir(repo_path: Path, source_path: str | Path | None) -> Path | None:
+    if source_path is None:
+        return None
+    path = Path(source_path)
+    if path.is_absolute():
+        return path
+    return repo_path / path
 
 
 def _collect_catalog_pairs(config_dir: Path, settings: GeneratorSettings) -> set[str]:
