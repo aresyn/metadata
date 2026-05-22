@@ -106,7 +106,7 @@ class Generator:
             self.settings.report_format,
             self.settings.joined_list_property_names,
             self.settings.marker_property_names_with_colon,
-        ).write(sections, temp_target, self.config.encoding)
+        ).write(sections, temp_target, self.settings.report_format.encoding)
         temp_target.replace(target)
 
     def _apply_extension_inheritance(self, sections: list[MetadataSection]) -> None:

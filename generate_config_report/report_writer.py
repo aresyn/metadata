@@ -20,7 +20,7 @@ class ReportWriter:
 
     def write(self, sections: Sequence[MetadataSection], output_file: Path, encoding: str) -> None:
         output_file.parent.mkdir(parents=True, exist_ok=True)
-        with output_file.open("w", encoding=encoding, newline=self.format_settings.line_ending) as stream:
+        with output_file.open("w", encoding=encoding, newline="") as stream:
             for index, section in enumerate(sections):
                 if index and self.format_settings.blank_line_between_root_sections:
                     stream.write(self.format_settings.line_ending)

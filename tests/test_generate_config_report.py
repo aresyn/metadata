@@ -31,6 +31,10 @@ TEMP_ROOT = Path("C:/tmp")
 SETTINGS = load_settings()
 
 
+def read_report(path: Path) -> str:
+    return path.read_text(encoding=SETTINGS.report_format.encoding)
+
+
 class ReportWriterTests(unittest.TestCase):
     def test_root_has_base_tab_and_no_trailing_blank_line(self) -> None:
         TEMP_ROOT.mkdir(parents=True, exist_ok=True)
@@ -47,6 +51,25 @@ class ReportWriterTests(unittest.TestCase):
             text = target.read_text(encoding="utf-8")
             self.assertTrue(text.startswith('\t- Конфигурации.Тест\n\t\tИмя: "Тест"\n'))
             self.assertFalse(text.endswith("\n\n"))
+
+    def test_utf16_report_uses_bom_and_crlf(self) -> None:
+        TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
+            target = Path(tmp) / "Report.txt"
+            root = MetadataObject(
+                full_name="Конфигурации.Тест",
+                type_key="configuration",
+                name="Тест",
+                properties=[ReportProperty("Имя", "Тест")],
+            )
+
+            ReportWriter(SETTINGS.report_format).write([MetadataSection("main", root)], target, "utf-16")
+
+            data = target.read_bytes()
+            self.assertTrue(data.startswith(b"\xff\xfe"))
+            self.assertIn("\r\n".encode("utf-16le"), data)
+            self.assertNotIn("\r\r\n".encode("utf-16le"), data)
+            self.assertEqual(target.read_text(encoding="utf-16").splitlines()[0], "\t- Конфигурации.Тест")
 
     def test_blank_line_between_main_and_extension(self) -> None:
         TEMP_ROOT.mkdir(parents=True, exist_ok=True)
@@ -252,7 +275,12 @@ class GeneratorIntegrationTests(unittest.TestCase):
             exit_code = main(["--config", str(config)])
 
             self.assertEqual(exit_code, 0)
-            report = (output / "Report.txt").read_text(encoding="utf-8")
+            report_path = output / "Report.txt"
+            data = report_path.read_bytes()
+            self.assertTrue(data.startswith(b"\xff\xfe"))
+            self.assertIn("\r\n".encode("utf-16le"), data)
+            self.assertNotIn("\r\r\n".encode("utf-16le"), data)
+            report = read_report(report_path)
             self.assertTrue(report.startswith("\t- "))
             self.assertNotIn("\n\n\t- ", report)
             stats = json.loads((diagnostics / "report-stats.json").read_text(encoding="utf-8"))
@@ -297,7 +325,7 @@ class GeneratorIntegrationTests(unittest.TestCase):
             exit_code = main(["--config", str(config)])
 
             self.assertEqual(exit_code, 0)
-            report = (output / "Report.txt").read_text(encoding="utf-8")
+            report = read_report(output / "Report.txt")
             self.assertTrue(report.startswith("\t- "))
             self.assertNotIn("\n\n\t- ", report)
             stats = json.loads((diagnostics / "report-stats.json").read_text(encoding="utf-8"))
@@ -345,7 +373,7 @@ class GeneratorIntegrationTests(unittest.TestCase):
             exit_code = main(["--config", str(config)])
 
             self.assertEqual(exit_code, 0)
-            report_lines = (output / "Report.txt").read_text(encoding="utf-8").splitlines()
+            report_lines = read_report(output / "Report.txt").splitlines()
             expected_root = [
                 "\t- Конфигурации.Расширение",
                 '\t\tИмя: "Расширение"',
@@ -433,7 +461,7 @@ class GeneratorIntegrationTests(unittest.TestCase):
             exit_code = main(["--config", str(config)])
 
             self.assertEqual(exit_code, 1)
-            report = (output / "Report.txt").read_text(encoding="utf-8")
+            report = read_report(output / "Report.txt")
             self.assertIn("\t- Конфигурации.Тестовая\n", report)
             self.assertIn('\t\tСиноним: "Тестовая конфигурация"\n', report)
             self.assertIn('\t\tРежимСовместимостиРасширенияКонфигурации: "НеИспользовать"\n', report)
@@ -490,7 +518,7 @@ class GeneratorIntegrationTests(unittest.TestCase):
             exit_code = main(["--config", str(config)])
 
             self.assertEqual(exit_code, 0)
-            report = (output / "Report.txt").read_text(encoding="utf-8")
+            report = read_report(output / "Report.txt")
             self.assertEqual(report.count("\t\t- Документы.Заказ\n"), 2)
             self.assertIn('\t\t\tТипНомера: "Строка"\n', report)
             self.assertIn('\t\t\tДлинаНомера: "9"\n', report)
@@ -539,7 +567,7 @@ class GeneratorIntegrationTests(unittest.TestCase):
             exit_code = main(["--config", str(config)])
 
             self.assertEqual(exit_code, 0)
-            report = (output / "Report.txt").read_text(encoding="utf-8")
+            report = read_report(output / "Report.txt")
             catalog_line = "\t\t- \u0421\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0438.TestCatalog\n"
             code6_line = '\t\t\t\u0414\u043b\u0438\u043d\u0430\u041a\u043e\u0434\u0430: "6"\n'
             code9_line = '\t\t\t\u0414\u043b\u0438\u043d\u0430\u041a\u043e\u0434\u0430: "9"\n'

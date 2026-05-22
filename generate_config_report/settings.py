@@ -13,6 +13,7 @@ DEFAULT_SETTINGS_PATH = Path(__file__).with_name("settings") / "defaults.json"
 
 @dataclass(frozen=True, slots=True)
 class ReportFormatSettings:
+    encoding: str
     base_indent: int
     indent: str
     line_ending: str
@@ -176,6 +177,7 @@ def load_settings(path: Path | None = None) -> GeneratorSettings:
 
 def _build_report_format(raw: dict[str, Any]) -> ReportFormatSettings:
     return ReportFormatSettings(
+        encoding=str(raw.get("encoding", "utf-16")),
         base_indent=int(raw["baseIndent"]),
         indent=str(raw["indent"]),
         line_ending=str(raw["lineEnding"]),

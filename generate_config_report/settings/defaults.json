@@ -2,12 +2,14 @@
   "supportedEncodings": [
     "utf-8",
     "utf-8-sig",
+    "utf-16",
     "cp1251"
   ],
   "reportFormat": {
+    "encoding": "utf-16",
     "baseIndent": 1,
     "indent": "\t",
-    "lineEnding": "\n",
+    "lineEnding": "\r\n",
     "blankLineBetweenRootSections": true
   },
   "xmlStructure": {
