@@ -120,6 +120,8 @@ def extract_property_with_used_names(
         converted = simple_value(node)
         if converted is None:
             continue
+        if isinstance(converted, str):
+            converted = _normalize_fill_value(output_name, converted, root, settings)
         if isinstance(converted, list):
             values.extend(converted)
         else:
@@ -217,6 +219,8 @@ def extract_extra_properties(
             if list(node):
                 diagnostics.warning("unsupportedComplexProperty", f"Skipped complex XML property: {name}", path)
             continue
+        if isinstance(converted, str):
+            converted = _normalize_fill_value(output_name, converted, root, settings)
         if isinstance(converted, list):
             if converted:
                 converted = [_translate_property_value(output_name, value, settings) for value in converted]
@@ -694,6 +698,31 @@ def _fill_value(node: ET.Element) -> str | None:
     if value_type == "xs:string" and node.text is not None:
         return f"{_format_type_name(value_type)}:{node.text}"
     return format_value(text) if text is not None else ""
+
+
+def _normalize_fill_value(output_name: str, value: str, root: ET.Element, settings: GeneratorSettings) -> str:
+    if output_name != translate_value("FillValue"):
+        return value
+    string_prefix = f"{translate_value('xs:string')}:"
+    if not value.startswith(string_prefix):
+        return value
+    fill_text = value[len(string_prefix):]
+    if fill_text == "" or fill_text.strip() != "":
+        return value
+    if _has_fixed_string_type(root, settings):
+        return ""
+    return value
+
+
+def _has_fixed_string_type(root: ET.Element, settings: GeneratorSettings) -> bool:
+    aliases = settings.property_aliases.get(translate_value("Type"), ("Type",))
+    for node in _candidate_property_nodes(root, aliases):
+        converted = simple_value(node)
+        values = converted if isinstance(converted, list) else [converted]
+        for value in values:
+            if isinstance(value, str) and value.startswith(f"{translate_value('xs:string')}(") and translate_value("Fixed") in value:
+                return True
+    return False
 
 
 def _is_zero_number(value: str) -> bool:

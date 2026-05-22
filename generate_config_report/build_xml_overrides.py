@@ -36,10 +36,15 @@ def build_xml_overrides(
         extension_dir,
         settings,
     )
-    keep_default_triplets = collect_standard_attribute_keep_default_overrides(
-        main_config_dir,
-        extension_dir,
-        settings,
+    keep_default_triplets = sorted(
+        set(settings.standard_attribute_keep_default_owner_attribute_properties)
+        | set(
+            collect_standard_attribute_keep_default_overrides(
+                main_config_dir,
+                extension_dir,
+                settings,
+            )
+        )
     )
     output = {
         "standardAttributeKeepEmptyValueOwnerAttributes": pairs,

@@ -304,6 +304,92 @@ class GeneratorIntegrationTests(unittest.TestCase):
             self.assertFalse(stats["mainConfigFound"])
             self.assertTrue(stats["extensionFound"])
 
+    def test_extension_root_block_uses_native_compatible_order_and_defaults(self) -> None:
+        TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
+            root = Path(tmp)
+            repo = root / "repo"
+            cfe = repo / "src" / "cfe"
+            cfe.mkdir(parents=True)
+            languages = cfe / "Languages"
+            languages.mkdir()
+            (cfe / "Configuration.xml").write_text(EXTENSION_CONFIGURATION_NATIVE_COMPAT_XML, encoding="utf-8")
+            (languages / "Русский.xml").write_text(LANGUAGE_RUSSIAN_WITHOUT_CODE_XML, encoding="utf-8")
+
+            output = root / "metadata"
+            diagnostics = root / "diagnostics"
+            logs = root / "logs"
+            config = root / "config.json"
+            config.write_text(
+                json.dumps(
+                    {
+                        "project": "test",
+                        "repoPath": str(repo),
+                        "mainConfigPath": "",
+                        "mainConfigRequired": False,
+                        "extensionPath": "src/cfe",
+                        "extensionRequired": True,
+                        "outputPath": str(output),
+                        "reportFileName": "Report.txt",
+                        "diagnosticsPath": str(diagnostics),
+                        "logsPath": str(logs),
+                        "encoding": "utf-8",
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            logging.shutdown()
+            logging.getLogger().handlers.clear()
+            exit_code = main(["--config", str(config)])
+
+            self.assertEqual(exit_code, 0)
+            report_lines = (output / "Report.txt").read_text(encoding="utf-8").splitlines()
+            expected_root = [
+                "\t- Конфигурации.Расширение",
+                '\t\tИмя: "Расширение"',
+                '\t\tСиноним: "Расширение"',
+                '\t\tКомментарий: ""',
+                '\t\tНазначениеРасширенияКонфигурации: "Дополнение"',
+                '\t\tПринадлежностьОбъекта: "Заимствованный"',
+                '\t\tОбъектРасширяемойКонфигурации: ""',
+                '\t\tПоддерживатьСоответствиеОбъектамРасширяемойКонфигурацииПоВнутреннимИдентификаторам: "Истина"',
+                '\t\tПрефиксИмен: "шн_"',
+                '\t\tРежимСовместимостиРасширенияКонфигурации: "Версия8_3_23"',
+                '\t\tОсновнойРежимЗапуска: "УправляемоеПриложение"',
+                '\t\tНазначенияИспользования: "ПриложениеПлатформы"',
+                '\t\tВариантВстроенногоЯзыка: "Русский"',
+                "\t\tОсновныеРоли:",
+                '\t\t\t"Роль.шн_ОбменСШиной"',
+                '\t\tПоставщик: "НМ"',
+                '\t\tВерсия: "1.0.058"',
+                '\t\tОсновнаяФормаОтчета: ""',
+                '\t\tОсновнаяФормаВариантаОтчета: ""',
+                '\t\tОсновнаяФормаНастроекОтчета: ""',
+                '\t\tОсновнаяФормаНастроекДинамическогоСписка: ""',
+                '\t\tОсновнаяФормаПоиска: ""',
+                '\t\tОсновнаяФормаИсторииИзмененийИсторииДанных: ""',
+                '\t\tОсновнаяФормаДанныхВерсииИсторииДанных: ""',
+                '\t\tОсновнаяФормаРазличийВерсийИсторииДанных: ""',
+                '\t\tОсновнаяФормаВыбораПользователейСистемыВзаимодействия: ""',
+                '\t\tОсновнойСтиль: ""',
+                '\t\tОсновнойЯзык: "Язык.Русский"',
+                '\t\tКраткаяИнформация: ""',
+                '\t\tПодробнаяИнформация: ""',
+                '\t\tАвторскиеПрава: ""',
+                '\t\tАдресИнформацииОПоставщике: ""',
+                '\t\tАдресИнформацииОКонфигурации: ""',
+                '\t\tРежимИспользованияМодальности: "НеИспользовать"',
+                '\t\tРежимИспользованияСинхронныхВызововРасширенийПлатформыИВнешнихКомпонент: "НеИспользовать"',
+                '\t\tРежимСовместимостиИнтерфейса: "ТаксиРазрешитьВерсия8_2"',
+                '\t\tРежимИспользованияТабличныхПространствБазыДанных: "НеИспользовать"',
+                '\t\tРежимСовместимости: "Версия8_3_24"',
+            ]
+            self.assertEqual(report_lines[: len(expected_root)], expected_root)
+            self.assertEqual(report_lines[len(expected_root)], "\t\t- Языки.Русский")
+            self.assertEqual(report_lines[len(expected_root) + 6], '\t\t\tКодЯзыка: "ru"')
+
     def test_minimal_configuration_generates_report(self) -> None:
         TEMP_ROOT.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
@@ -712,6 +798,32 @@ class PropertyExtractorTests(unittest.TestCase):
                 ),
             )
 
+    def test_standard_attribute_keeps_period_fill_checking_by_default(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(STANDARD_ATTRIBUTE_PERIOD_XML)
+        standard_attributes_name = next(
+            key for key, aliases in SETTINGS.property_aliases.items() if "StandardAttributes" in aliases
+        )
+
+        prop = extract_properties(
+            root,
+            (standard_attributes_name,),
+            Diagnostics("test"),
+            SETTINGS,
+            include_extra_properties=False,
+            owner_name="РегистрыСведений.шн_РесурсыЗаданийОбработкиДокументов",
+            owner_type_key="information_register",
+        )[0]
+
+        self.assertEqual(
+            prop,
+            ReportProperty(
+                standard_attributes_name,
+                [("Период", [ReportProperty("ПроверкаЗаполнения", "НеПроверять", "scalar")])],
+                "named_object_list",
+            ),
+        )
+
     def test_standard_attribute_suppresses_properties_by_owner_type_and_name(self) -> None:
         configure_extractor(SETTINGS)
         root = ET.fromstring(STANDARD_ATTRIBUTE_TYPE_SPECIFIC_SUPPRESSION_XML)
@@ -832,6 +944,22 @@ class PropertyExtractorTests(unittest.TestCase):
         self.assertEqual(form_type, ReportProperty("ТипФормы", "Управляемая"))
         self.assertEqual(lock_mode, ReportProperty("РежимУправленияБлокировкойДанных", "Управляемый"))
         self.assertEqual(write_mode, ReportProperty("РежимЗаписи", "Независимый"))
+
+    def test_fixed_string_whitespace_fill_value_is_empty(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(FIXED_STRING_WHITESPACE_FILL_VALUE_XML)
+
+        fill_value = extract_property(root, "ЗначениеЗаполнения", SETTINGS)
+
+        self.assertEqual(fill_value, ReportProperty("ЗначениеЗаполнения", ""))
+
+    def test_variable_string_whitespace_fill_value_is_preserved(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(VARIABLE_STRING_WHITESPACE_FILL_VALUE_XML)
+
+        fill_value = extract_property(root, "ЗначениеЗаполнения", SETTINGS)
+
+        self.assertEqual(fill_value, ReportProperty("ЗначениеЗаполнения", "Строка:" + " " * 36))
 
     def test_localized_tooltip_preserves_significant_spaces(self) -> None:
         configure_extractor(SETTINGS)
@@ -1011,6 +1139,11 @@ class PropertyExtractorTests(unittest.TestCase):
         prop = extract_property(ET.fromstring(HANDLER_WITH_COMMON_MODULE_XML), "Обработчик", SETTINGS)
         self.assertEqual(prop, ReportProperty("Обработчик", "РаботаСФайламиКлиентСервер.ОпределитьФормуПрисоединенногоФайла"))
 
+    def test_method_name_prefix_translation_is_applied(self) -> None:
+        configure_extractor(SETTINGS)
+        prop = extract_property(ET.fromstring(METHOD_NAME_WITH_COMMON_MODULE_XML), "ИмяМетода", SETTINGS)
+        self.assertEqual(prop, ReportProperty("ИмяМетода", "шн_ОбменСШинойСервер.ВыполнитьОбработкуСервисовИнтеграции"))
+
     def test_extended_type_and_return_values_reuse_are_translated(self) -> None:
         configure_extractor(SETTINGS)
         root = ET.fromstring(EXTENDED_TYPE_XML)
@@ -1128,6 +1261,51 @@ EXTENSION_CONFIGURATION_WITH_ADOPTED_DOCUMENT_XML = """<?xml version="1.0" encod
 """
 
 
+EXTENSION_CONFIGURATION_NATIVE_COMPAT_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Configuration>
+    <Properties>
+      <ObjectBelonging>Adopted</ObjectBelonging>
+      <Name>Расширение</Name>
+      <Synonym><v8:item><v8:lang>ru</v8:lang><v8:content>Расширение</v8:content></v8:item></Synonym>
+      <Comment/>
+      <ConfigurationExtensionPurpose>AddOn</ConfigurationExtensionPurpose>
+      <KeepMappingToExtendedConfigurationObjectsByIDs>true</KeepMappingToExtendedConfigurationObjectsByIDs>
+      <NamePrefix>шн_</NamePrefix>
+      <ConfigurationExtensionCompatibilityMode>Version8_3_23</ConfigurationExtensionCompatibilityMode>
+      <ScriptVariant>Russian</ScriptVariant>
+      <DefaultRoles>
+        <xr:Item xsi:type="xr:MDObjectRef">Role.шн_ОбменСШиной</xr:Item>
+      </DefaultRoles>
+      <Vendor>НМ</Vendor>
+      <Version>1.0.058</Version>
+      <BriefInformation/>
+      <DetailedInformation/>
+      <Copyright/>
+      <VendorInformationAddress/>
+      <ConfigurationInformationAddress/>
+    </Properties>
+    <ChildObjects>
+      <Language>Русский</Language>
+    </ChildObjects>
+  </Configuration>
+</MetaDataObject>
+"""
+
+
+LANGUAGE_RUSSIAN_WITHOUT_CODE_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses">
+  <Language>
+    <Properties>
+      <ObjectBelonging>Adopted</ObjectBelonging>
+      <Name>Русский</Name>
+      <Comment/>
+    </Properties>
+  </Language>
+</MetaDataObject>
+"""
+
+
 CONFIGURATION_WITH_CATALOG_XML = """<?xml version="1.0" encoding="UTF-8"?>
 <MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:v8="http://v8.1c.ru/8.1/data/core">
   <Configuration>
@@ -1216,6 +1394,34 @@ REFERENCE_VALUE_XML = """<Form xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:xs
     <WriteMode>Independent</WriteMode>
   </Properties>
 </Form>"""
+
+
+FIXED_STRING_WHITESPACE_FILL_VALUE_XML = """<Attribute xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Properties>
+    <Type>
+      <v8:Type>xs:string</v8:Type>
+      <v8:StringQualifiers>
+        <v8:Length>36</v8:Length>
+        <v8:AllowedLength>Fixed</v8:AllowedLength>
+      </v8:StringQualifiers>
+    </Type>
+    <FillValue xsi:type="xs:string">                                    </FillValue>
+  </Properties>
+</Attribute>"""
+
+
+VARIABLE_STRING_WHITESPACE_FILL_VALUE_XML = """<Attribute xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Properties>
+    <Type>
+      <v8:Type>xs:string</v8:Type>
+      <v8:StringQualifiers>
+        <v8:Length>36</v8:Length>
+        <v8:AllowedLength>Variable</v8:AllowedLength>
+      </v8:StringQualifiers>
+    </Type>
+    <FillValue xsi:type="xs:string">                                    </FillValue>
+  </Properties>
+</Attribute>"""
 
 
 TOOLTIP_SINGLE_SPACE_XML = """<Attribute xmlns:v8="http://v8.1c.ru/8.1/data/core">
@@ -1388,6 +1594,17 @@ STANDARD_ATTRIBUTE_NAME_AND_PARENT_XML = """<Catalog xmlns:xr="http://v8.1c.ru/8
   </Properties>
 </Catalog>
 """
+
+
+STANDARD_ATTRIBUTE_PERIOD_XML = """<InformationRegister xmlns:xr="http://v8.1c.ru/8.3/xcf/readable">
+  <Properties>
+    <StandardAttributes>
+      <xr:StandardAttribute name="Period">
+        <xr:FillChecking>DontCheck</xr:FillChecking>
+      </xr:StandardAttribute>
+    </StandardAttributes>
+  </Properties>
+</InformationRegister>"""
 
 
 STANDARD_ATTRIBUTE_TYPE_SPECIFIC_SUPPRESSION_XML = """<Catalog xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1666,6 +1883,13 @@ HANDLER_WITH_COMMON_MODULE_XML = """<EventSubscription>
     <Handler>ОбщийМодуль.РаботаСФайламиКлиентСервер.ОпределитьФормуПрисоединенногоФайла</Handler>
   </Properties>
 </EventSubscription>"""
+
+
+METHOD_NAME_WITH_COMMON_MODULE_XML = """<ScheduledJob>
+  <Properties>
+    <MethodName>ОбщийМодуль.шн_ОбменСШинойСервер.ВыполнитьОбработкуСервисовИнтеграции</MethodName>
+  </Properties>
+</ScheduledJob>"""
 
 
 if __name__ == "__main__":
