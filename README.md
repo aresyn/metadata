@@ -1,272 +1,136 @@
 # generate-config-report
 
-Генератор `Report.txt` по XML-выгрузке конфигурации 1С для последующей индексации и анализа.
+`generate-config-report` формирует текстовый отчет по XML-выгрузке метаданных 1C. Цель проекта - получить отчет, близкий к штатному отчету конфигуратора `ОтчетПоКонфигурации.txt`, но без привязки к одной конкретной конфигурации или версии платформы.
 
-Инструмент читает основную конфигурацию из `src/cf`, опционально читает расширение из `src/cfe` и формирует отчет в формате, максимально близком к штатному отчету Конфигуратора `Отчет по конфигурации`.
+Механизм работает поверх XML-структуры конфигурации: читает `Configuration.xml`, файлы объектов метаданных, применяет настройки генератора и записывает итоговый отчет в формате, удобном для сравнения и автоматической обработки.
 
-## Что умеет
+## Быстрый Старт
 
-- CLI на Python.
-- Чтение project config из JSON.
-- Чтение основной конфигурации и расширения.
-- Генерация `Report.txt`.
-- Диагностика, статистика, логирование.
-- Настройки генерации через JSON.
-- Overlay-настройки поверх defaults.
-- XML-derived overrides через отдельный builder.
-- Unit tests.
+Требования:
 
-## Структура
+- Python 3.11 или новее.
+- Каталог XML-выгрузки конфигурации 1C с файлом `Configuration.xml`.
+
+Минимальный запуск для агентов и скриптов:
+
+```powershell
+python generate_config_report.py D:\cf_llv
+```
+
+Канонический запуск как Python-модуля:
+
+```powershell
+python -m generate_config_report D:\cf_llv
+```
+
+Оба варианта создают отчет прямо в каталоге конфигурации:
 
 ```text
-generate_config_report.py
+D:\cf_llv\ОтчетПоКонфигурации.txt
+```
+
+Если файл уже существует, он безопасно заменяется: новый отчет сначала пишется во временный файл в том же каталоге, затем выполняется `Path.replace()`. При ошибке записи или замены временный файл удаляется, а старый отчет остается на месте.
+
+## Установка
+
+Проект не требует внешних Python-зависимостей. Для запуска из рабочей копии достаточно команд выше.
+
+Чтобы получить консольные команды из `pyproject.toml`, установите проект в editable-режиме:
+
+```powershell
+python -m pip install -e .
+generate-config-report D:\cf_llv
+```
+
+После установки доступны:
+
+- `generate-config-report` - основной генератор отчета.
+- `generate-config-report-build-overrides` - служебная команда построения XML-derived overrides.
+
+## Режимы Работы
+
+Простой режим принимает один позиционный аргумент:
+
+```powershell
+python generate_config_report.py D:\path\to\cf
+```
+
+В этом режиме:
+
+- целевой каталог считается корнем XML-конфигурации;
+- расширение `cfe` не подключается автоматически;
+- diagnostics и logs не создаются;
+- XML-derived overrides строятся во временном каталоге;
+- итоговый файл всегда называется `ОтчетПоКонфигурации.txt`.
+
+Расширенный режим использует JSON-конфиг:
+
+```powershell
+python generate_config_report.py --config .\config.example.json
+```
+
+Он нужен, когда требуется указать отдельный `repoPath`, `mainConfigPath`, `extensionPath`, каталог вывода, diagnostics, logs или собственный файл настроек генератора.
+
+## Формат Отчета
+
+По умолчанию отчет записывается в UTF-16 с BOM и CRLF-переносами. Структура представляет дерево объектов метаданных:
+
+```text
+	- Конфигурации.Демо
+		Имя: "Демо"
+		Синоним: "Демо"
+		- Справочники.Номенклатура
+			Имя: "Номенклатура"
+```
+
+Формат вывода, список поддержанных типов объектов, порядок свойств, переводы значений и подавление шумных свойств задаются в [generate_config_report/settings/defaults.json](generate_config_report/settings/defaults.json).
+
+## Документация
+
+- [CLI](docs/cli.md) - варианты запуска, флаги, safe replace, коды завершения.
+- [Конфигурация](docs/configuration.md) - `config.json`, настройки генератора, XML-derived overrides.
+- [Архитектура](docs/architecture.md) - поток данных, модули пакета, диагностический контур.
+- [Разработка](docs/development.md) - тесты, локальные фикстуры, добавление поддержки новых объектов и свойств.
+
+## Структура Проекта
+
+```text
+generate_config_report.py                 # совместимый script entry point
+config.example.json                       # пример расширенного JSON-конфига
+pyproject.toml                            # package metadata и console scripts
 generate_config_report/
-  cli.py
-  config.py
-  diagnostics.py
-  generator.py
-  metadata_model.py
-  object_registry.py
-  property_extractors.py
-  report_writer.py
-  settings.py
-  xml_reader.py
-  build_xml_overrides.py
-  settings/
-    defaults.json
-    generated/
+  cli.py                                  # CLI и выбор режима запуска
+  config.py                               # ProjectConfig и чтение JSON-конфига
+  generator.py                            # orchestration, diagnostics, exit codes
+  xml_reader.py                           # чтение XML-выгрузки метаданных
+  property_extractors.py                  # извлечение и форматирование свойств
+  report_writer.py                        # запись текстового отчета
+  build_xml_overrides.py                  # построение overrides по XML
+  settings.py                             # загрузка defaults и overlay-настроек
+  settings/defaults.json                  # основная настройка универсального механизма
 tests/
-  test_generate_config_report.py
+  test_generate_config_report.py          # unit и integration tests
 ```
-
-## Быстрый запуск
-
-Пример project config:
-
-```json
-{
-  "project": "orders",
-  "repoPath": "C:/im/Devops/Codemetadata/orders",
-  "mainConfigPath": "src/cf",
-  "mainConfigRequired": true,
-  "extensionPath": "src/cfe",
-  "extensionRequired": false,
-  "outputPath": "C:/tmp/generate-config-report-orders/metadata",
-  "reportFileName": "Report.txt",
-  "diagnosticsPath": "C:/tmp/generate-config-report-orders/diagnostics",
-  "logsPath": "C:/tmp/generate-config-report-orders/logs",
-  "encoding": "utf-8",
-  "warningsAsErrors": false,
-  "buildXmlOverrides": true,
-  "generatorSettingsPath": "C:/im/Devops/Codemetadata/generate_config_report/settings/generated/orders.xml-overrides.json"
-}
-```
-
-Запуск:
-
-```powershell
-python -B generate_config_report.py --config C:\tmp\orders-generate-config-report.json
-```
-
-Результат:
-
-```text
-C:\tmp\generate-config-report-orders\metadata\Report.txt
-C:\tmp\generate-config-report-orders\diagnostics\report-stats.json
-C:\tmp\generate-config-report-orders\diagnostics\report-diagnostics.json
-C:\tmp\generate-config-report-orders\logs\generate-config-report-<timestamp>.log
-```
-
-## CLI
-
-```text
---config <path>       путь к project config JSON
---verbose             подробный лог
---strict              считать warnings ошибками
---dry-run             проверить входные данные без записи Report.txt
-```
-
-## Project config
-
-Обязательные поля:
-
-```text
-project
-repoPath
-outputPath
-reportFileName
-```
-
-Необязательные поля:
-
-```text
-mainConfigPath
-mainConfigRequired
-extensionPath
-extensionRequired
-diagnosticsPath
-logsPath
-encoding
-warningsAsErrors
-buildXmlOverrides
-generatorSettingsPath
-```
-
-Правила источников:
-
-- `mainConfigPath` и `extensionPath` можно отключить, передав пустую строку.
-- `mainConfigRequired=true` требует существующий каталог основной конфигурации.
-- `extensionRequired=true` требует существующий каталог расширения.
-- Хотя бы один источник должен быть сконфигурирован.
-- На этапе запуска должен быть найден хотя бы один каталог источника, иначе генератор завершится ошибкой.
-
-`generatorSettingsPath` работает как overlay поверх встроенных defaults, а не как полная замена файла настроек.
-
-`buildXmlOverrides=true` включает автоматическое построение XML-derived override JSON в основном скрипте перед генерацией `Report.txt`.
-
-Поведение:
-
-- если `generatorSettingsPath` указан, overrides будут сгенерированы в этот файл;
-- если `generatorSettingsPath` не указан, файл будет создан автоматически в:
-  `generate_config_report/settings/generated/<project>.xml-overrides.json`;
-- после этого основной скрипт сразу использует полученный JSON как overlay settings.
-
-## Настройки генератора
-
-Базовые настройки лежат в файле:
-
-```text
-generate_config_report/settings/defaults.json
-```
-
-В JSON-настройки вынесены:
-
-- aliases XML-свойств к именам из `Report.txt`;
-- whitelist свойств по типам объектов;
-- default values для свойств, которые штатный отчет печатает даже без явного XML-узла;
-- переводы значений, типов, префиксов и enum;
-- marker properties;
-- joined-list / multiline formatting rules;
-- synthetic defaults для adopted объектов расширения;
-- suppression rules для шумных стандартных реквизитов;
-- value/prefix translations;
-- корневые overrides;
-- XML-derived override sections.
-
-Правило проекта: все настраиваемое хранится в JSON.  
-Python-код должен содержать только общую логику разбора и вывода, без таблиц проектных переводов и без конфигурационно-специфичного хардкода.
-
-Важно: даже если в текущем эталонном `orders` нет некоторых типов метаданных, генератор должен их поддерживать. В частности, `ПланыСчетов` и `РегистрыБухгалтерии` нельзя считать неактуальными только потому, что их нет в текущем примере.
-
-## XML-derived overrides
-
-Для project-specific правил, которые должны вычисляться по XML, есть два режима.
-
-Основной рекомендуемый режим: через project config и `buildXmlOverrides=true`.
-
-Отдельный ручной builder остается доступен:
-
-```powershell
-python -B -m generate_config_report.build_xml_overrides `
-  --repo-path C:\im\Devops\Codemetadata\orders `
-  --main-config-path src/cf `
-  --extension-path src/cfe `
-  --output C:\im\Devops\Codemetadata\generate_config_report\settings\generated\orders.xml-overrides.json
-```
-
-Этот файл затем подключается через `generatorSettingsPath`.
-
-Builder нужен для случаев, где:
-
-- нельзя захардкодить список объектов в defaults;
-- правило должно работать для любых конфигураций;
-- критерий можно вычислить из XML-структуры.
-
-Примеры таких правил:
-
-- keep empty/default для части стандартных реквизитов;
-- owner-specific suppression/keep rules;
-- узкие override-списки для `Owner/Parent` и похожих случаев.
-
-## Формат `Report.txt`
-
-Ключевые правила:
-
-- корневая секция начинается с одной табуляции перед `-`;
-- вложенность задается табуляцией;
-- scalar-свойства печатаются как `Имя: "Значение"`;
-- списки печатаются блоком;
-- часть списков печатается в joined multiline quoted-формате;
-- основная конфигурация и расширение идут отдельными корневыми секциями;
-- между корневыми секциями одна пустая строка;
-- технические пути, BSL-модули и Git-сведения не выводятся.
-
-## Порядок вывода
-
-`Report.txt` строится в порядке, близком к Конфигуратору:
-
-- сначала основная конфигурация, потом расширение;
-- объекты внутри секции идут по ссылкам из `Configuration.xml` и `ChildObjects`;
-- дочерние объекты идут по порядку из XML родителя;
-- fallback применяется только там, где нет явной ссылки в XML.
-
-`ReportWriter` не сортирует дерево повторно. Порядок должен быть подготовлен до него.
 
 ## Проверки
 
-Unit tests:
+Быстрая проверка синтаксиса:
 
 ```powershell
-$env:PYTHONDONTWRITEBYTECODE='1'
-$env:TMP='C:\tmp'
-$env:TEMP='C:\tmp'
+python -m py_compile generate_config_report\cli.py generate_config_report\generator.py generate_config_report\__main__.py tests\test_generate_config_report.py
+```
+
+Полный тестовый прогон:
+
+```powershell
 python -B -m unittest discover -s tests -v
 ```
 
-Smoke run:
-
-```powershell
-python -B generate_config_report.py --config C:\tmp\orders-generate-config-report.json
-```
-
-JSON validation:
-
-```powershell
-python -m json.tool generate_config_report\settings\defaults.json > $null
-```
-
-## Текущий статус
-
-На выгрузке `orders` механизм уже закрывает основную часть функционала и большую часть расхождений с эталонным `ОтчетПоКонфигурации.txt`.
-
-По последнему прогону:
-
-- unit tests: `42/42 OK`
-- полная генерация `orders`: успешно
-- генератор без проектного хардкода в Python для переводов и override-таблиц
-- XML-derived overrides вынесены в отдельный generated JSON
-- текущее расхождение с эталоном: `197631` строк против `197782`
-
-Детальный прогресс и остаток работ вынесены в отдельный файл:
-
-```text
-progress-generate-config-report.md
-```
+Интеграционные тесты простого CLI ожидают локальную фикстуру `D:\cf_llv` с файлом `D:\cf_llv\Configuration.xml` и намеренно создают или заменяют `D:\cf_llv\ОтчетПоКонфигурации.txt`.
 
 ## Ограничения
 
-- полное совпадение с Конфигуратором еще не достигнуто;
-- остаток расхождений сейчас в основном сидит в exact-line diff, а не в крупных архитектурных пробелах;
-- часть правил по сложным mixed-list значениям и пустым quoted-строкам еще требует уточнения;
-- `ПланыСчетов` и `РегистрыБухгалтерии` нужно отдельно проверить и при необходимости добавить как полноценные metadata-type, даже если в текущем `orders` они отсутствуют;
-- defaults и generated overrides нужно поддерживать как конфигурацию, а не переносить такие правила в Python.
-
-## Документы
-
-```text
-prd-generate-config-report.md
-prd-generate-config-report (1).md
-dev-spec-generate-config-report.md
-ОтчетПоКонфигурации.txt
-progress-generate-config-report.md
-```
+- Входом является XML-выгрузка конфигурации, а не бинарный `.cf`.
+- Простой режим обрабатывает только указанный каталог конфигурации, без автоматического подключения расширения.
+- Проект стремится к высокой близости к отчету конфигуратора, но не гарантирует побайтовое совпадение для всех версий платформы.
+- Для новых XML-форматов платформы может потребоваться расширение `defaults.json` или точечная доработка extractor-логики.

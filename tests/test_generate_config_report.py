@@ -5,15 +5,17 @@ import logging
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 from xml.etree import ElementTree as ET
 
 from generate_config_report.build_xml_overrides import (
     collect_standard_attribute_keep_default_overrides,
     collect_standard_attribute_keep_empty_overrides,
 )
-from generate_config_report.cli import main
+from generate_config_report.cli import SIMPLE_REPORT_FILE_NAME, main
 from generate_config_report.config import ConfigError, load_config
 from generate_config_report.diagnostics import Diagnostics
+from generate_config_report.generator import EXIT_REPORT_WRITE_ERROR
 from generate_config_report.metadata_model import MetadataObject, MetadataSection, ReportProperty
 from generate_config_report.property_extractors import (
     configure_extractor,
@@ -28,11 +30,19 @@ from generate_config_report.settings import load_settings
 
 
 TEMP_ROOT = Path("C:/tmp")
+CF_LLV_FIXTURE = Path("D:/cf_llv")
 SETTINGS = load_settings()
 
 
 def read_report(path: Path) -> str:
     return path.read_text(encoding=SETTINGS.report_format.encoding)
+
+
+def require_cf_llv_fixture(testcase: unittest.TestCase) -> Path:
+    testcase.assertTrue(CF_LLV_FIXTURE.is_dir(), f"Required fixture directory is missing: {CF_LLV_FIXTURE}")
+    configuration_xml = CF_LLV_FIXTURE / "Configuration.xml"
+    testcase.assertTrue(configuration_xml.is_file(), f"Required fixture file is missing: {configuration_xml}")
+    return CF_LLV_FIXTURE
 
 
 class ReportWriterTests(unittest.TestCase):
@@ -271,6 +281,85 @@ class ReportWriterTests(unittest.TestCase):
 
 
 class GeneratorIntegrationTests(unittest.TestCase):
+    def test_simple_cli_writes_report_to_target_configuration_dir(self) -> None:
+        cf = require_cf_llv_fixture(self)
+        report_path = cf / SIMPLE_REPORT_FILE_NAME
+
+        logging.shutdown()
+        logging.getLogger().handlers.clear()
+        exit_code = main([str(cf)])
+
+        self.assertEqual(exit_code, 0)
+        self.assertTrue(report_path.is_file())
+        report = read_report(report_path)
+        self.assertGreater(len(report), 0)
+        self.assertIn("\t- Конфигурации.", report)
+
+    def test_simple_cli_replaces_existing_report_in_target_dir(self) -> None:
+        cf = require_cf_llv_fixture(self)
+        report_path = cf / SIMPLE_REPORT_FILE_NAME
+        sentinel = "old report sentinel"
+        report_path.write_text(sentinel, encoding=SETTINGS.report_format.encoding)
+
+        logging.shutdown()
+        logging.getLogger().handlers.clear()
+        exit_code = main([str(cf)])
+
+        self.assertEqual(exit_code, 0)
+        report = read_report(report_path)
+        self.assertNotEqual(report, sentinel)
+        self.assertIn("\t- Конфигурации.", report)
+
+    def test_simple_cli_dry_run_does_not_touch_report(self) -> None:
+        cf = require_cf_llv_fixture(self)
+        report_path = cf / SIMPLE_REPORT_FILE_NAME
+        if not report_path.exists():
+            report_path.write_text("dry-run sentinel", encoding=SETTINGS.report_format.encoding)
+        before = report_path.read_bytes()
+        before_mtime = report_path.stat().st_mtime_ns
+
+        logging.shutdown()
+        logging.getLogger().handlers.clear()
+        exit_code = main([str(cf), "--dry-run"])
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(report_path.read_bytes(), before)
+        self.assertEqual(report_path.stat().st_mtime_ns, before_mtime)
+
+    def test_simple_cli_safe_replace_keeps_existing_report_when_write_fails(self) -> None:
+        cf = require_cf_llv_fixture(self)
+        report_path = cf / SIMPLE_REPORT_FILE_NAME
+        temp_report_path = report_path.with_name(f"{report_path.name}.tmp")
+        original = report_path.read_bytes() if report_path.exists() else None
+        sentinel = "protected report sentinel"
+        report_path.write_text(sentinel, encoding=SETTINGS.report_format.encoding)
+
+        def fail_after_partial_write(_writer, _sections, output_file, _encoding) -> None:
+            Path(output_file).write_text("partial report", encoding="utf-8")
+            raise OSError("simulated write failure")
+
+        try:
+            logging.shutdown()
+            logging.getLogger().handlers.clear()
+            with patch("generate_config_report.generator.ReportWriter.write", fail_after_partial_write):
+                exit_code = main([str(cf)])
+
+            self.assertEqual(exit_code, EXIT_REPORT_WRITE_ERROR)
+            self.assertEqual(read_report(report_path), sentinel)
+            self.assertFalse(temp_report_path.exists())
+        finally:
+            if original is None:
+                report_path.unlink(missing_ok=True)
+            else:
+                report_path.write_bytes(original)
+            temp_report_path.unlink(missing_ok=True)
+
+    def test_simple_cli_rejects_config_and_target_dir_together(self) -> None:
+        with self.assertRaises(SystemExit) as exc:
+            main([str(CF_LLV_FIXTURE), "--config", "config.json"])
+
+        self.assertEqual(exc.exception.code, 2)
+
     def test_main_only_configuration_succeeds_when_extension_is_disabled(self) -> None:
         TEMP_ROOT.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:

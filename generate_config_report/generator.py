@@ -102,12 +102,19 @@ class Generator:
     def _write_report(self, sections: list[MetadataSection]) -> None:
         target = self.config.report_path
         temp_target = target.with_name(f"{target.name}.tmp")
-        ReportWriter(
-            self.settings.report_format,
-            self.settings.joined_list_property_names,
-            self.settings.marker_property_names_with_colon,
-        ).write(sections, temp_target, self.settings.report_format.encoding)
-        temp_target.replace(target)
+        try:
+            ReportWriter(
+                self.settings.report_format,
+                self.settings.joined_list_property_names,
+                self.settings.marker_property_names_with_colon,
+            ).write(sections, temp_target, self.settings.report_format.encoding)
+            temp_target.replace(target)
+        except OSError:
+            try:
+                temp_target.unlink(missing_ok=True)
+            except OSError as cleanup_error:
+                self.logger.warning("Cannot remove temporary report file %s: %s", temp_target, cleanup_error)
+            raise
 
     def _apply_extension_inheritance(self, sections: list[MetadataSection]) -> None:
         main_section = next((section for section in sections if section.source_kind == "main"), None)
