@@ -135,6 +135,29 @@ class ReportWriterTests(unittest.TestCase):
                 text,
             )
 
+    def test_choice_parameter_lists_use_joined_list_format(self) -> None:
+        TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
+            target = Path(tmp) / "Report.txt"
+            root = MetadataObject(
+                "Конфигурации.Тест",
+                "configuration",
+                "Тест",
+                [
+                    ReportProperty("ПараметрыВыбора", ["Отбор.А(Булево:Истина)", "Отбор.Б(Булево:Ложь)"], "list"),
+                    ReportProperty("СвязиПараметровВыбора", ["Отбор.Владелец(Свойство)", "Отбор.Тип(Тип)"], "list"),
+                ],
+            )
+            ReportWriter(SETTINGS.report_format, SETTINGS.joined_list_property_names).write(
+                [MetadataSection("main", root)],
+                target,
+                "utf-8",
+            )
+
+            text = target.read_text(encoding="utf-8")
+            self.assertIn('\t\tПараметрыВыбора:\n\t\t\t"Отбор.А(Булево:Истина),\n\t\t\t Отбор.Б(Булево:Ложь)"\n', text)
+            self.assertIn('\t\tСвязиПараметровВыбора:\n\t\t\t"Отбор.Владелец(Свойство),\n\t\t\t Отбор.Тип(Тип)"\n', text)
+
     def test_multiline_scalar_value_keeps_reference_indentation(self) -> None:
         TEMP_ROOT.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
@@ -166,6 +189,22 @@ class ReportWriterTests(unittest.TestCase):
 
             text = target.read_text(encoding="utf-8")
             self.assertIn('\t\tПодсказка: "Первая строка\n\t\t            Вторая строка"\n', text)
+
+    def test_multiline_scalar_value_keeps_blank_continuation_line_empty(self) -> None:
+        TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
+            target = Path(tmp) / "Report.txt"
+            root = MetadataObject(
+                "Конфигурации.Тест",
+                "configuration",
+                "Тест",
+                [ReportProperty("Подсказка", "Первая строка\n\n            Третья строка")],
+            )
+
+            ReportWriter(SETTINGS.report_format).write([MetadataSection("main", root)], target, "utf-8")
+
+            text = target.read_text(encoding="utf-8")
+            self.assertIn('\t\tПодсказка: "Первая строка\n\n\t\t            Третья строка"\n', text)
 
     def test_writer_preserves_prepared_reference_order(self) -> None:
         TEMP_ROOT.mkdir(parents=True, exist_ok=True)
@@ -702,6 +741,39 @@ class SettingsAndOverridesTests(unittest.TestCase):
                 ],
             )
 
+    def test_collect_standard_attribute_keep_empty_overrides_from_zero_guid_design_time_ref(self) -> None:
+        TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
+            repo = Path(tmp) / "repo"
+            catalogs = repo / "src" / "cf" / "Catalogs"
+            catalogs.mkdir(parents=True)
+            zero_guid_xml = CATALOG_OWNER_XML.replace(
+                '<xr:FillValue xsi:nil="true"/>',
+                '<xr:FillValue xsi:type="xr:DesignTimeRef">357cf802-45da-4084-adb7-a07496253859.00000000-0000-0000-0000-000000000000</xr:FillValue>',
+                1,
+            )
+            (catalogs / "Файлы.xml").write_text(zero_guid_xml, encoding="utf-8")
+
+            pairs = collect_standard_attribute_keep_empty_overrides(repo / "src" / "cf", None, SETTINGS)
+
+            self.assertEqual(pairs, ["Справочники.Файлы|Владелец"])
+
+    def test_collect_standard_attribute_keep_empty_overrides_for_attached_file_catalogs(self) -> None:
+        TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as tmp:
+            repo = Path(tmp) / "repo"
+            catalogs = repo / "src" / "cf" / "Catalogs"
+            catalogs.mkdir(parents=True)
+            attached_file_xml = CATALOG_OWNER_XML.replace("<Name>Файлы</Name>", "<Name>ДокументПрисоединенныеФайлы</Name>").replace(
+                "<CreateOnInput>DontUse</CreateOnInput>",
+                "<CreateOnInput>Use</CreateOnInput>\n      <Comment>Подчиненный справочник файлов</Comment>\n      <InputByString><xr:Field>Catalog.ДокументПрисоединенныеФайлы.StandardAttribute.Description</xr:Field></InputByString>",
+            )
+            (catalogs / "ДокументПрисоединенныеФайлы.xml").write_text(attached_file_xml, encoding="utf-8")
+
+            pairs = collect_standard_attribute_keep_empty_overrides(repo / "src" / "cf", None, SETTINGS)
+
+            self.assertEqual(pairs, ["Справочники.ДокументПрисоединенныеФайлы|Владелец"])
+
 
     def test_collect_standard_attribute_keep_default_overrides_from_xml(self) -> None:
         TEMP_ROOT.mkdir(parents=True, exist_ok=True)
@@ -723,6 +795,26 @@ class SettingsAndOverridesTests(unittest.TestCase):
 
 
 class PropertyExtractorTests(unittest.TestCase):
+    def test_configuration_default_keep_mapping_is_emitted_when_xml_node_is_absent(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(
+            """<Configuration>
+  <Properties>
+    <Name>Тест</Name>
+  </Properties>
+</Configuration>"""
+        )
+
+        props = extract_properties(root, SETTINGS.configuration_whitelist, Diagnostics("test"), SETTINGS, include_extra_properties=False)
+
+        self.assertIn(
+            ReportProperty(
+                "ПоддерживатьСоответствиеОбъектамРасширяемойКонфигурацииПоВнутреннимИдентификаторам",
+                "Истина",
+            ),
+            props,
+        )
+
     def test_standard_attribute_suppresses_noisy_properties_by_name(self) -> None:
         configure_extractor(SETTINGS)
         root = ET.fromstring(STANDARD_ATTRIBUTE_SUPPRESSION_XML)
@@ -972,6 +1064,207 @@ class PropertyExtractorTests(unittest.TestCase):
         self.assertEqual(form_type, ReportProperty("ТипФормы", "Управляемая"))
         self.assertEqual(lock_mode, ReportProperty("РежимУправленияБлокировкойДанных", "Управляемый"))
         self.assertEqual(write_mode, ReportProperty("РежимЗаписи", "Независимый"))
+
+    def test_zero_guid_design_time_ref_fill_value_is_empty(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(
+            """<Attribute xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable">
+  <Properties>
+    <FillValue xsi:type="xr:DesignTimeRef">357cf802-45da-4084-adb7-a07496253859.00000000-0000-0000-0000-000000000000</FillValue>
+  </Properties>
+</Attribute>"""
+        )
+
+        fill_value = extract_property(root, "ЗначениеЗаполнения", SETTINGS)
+
+        self.assertEqual(fill_value, ReportProperty("ЗначениеЗаполнения", ""))
+
+    def test_standard_tabular_sections_are_extracted_from_standard_tabular_sections_node(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(
+            """<ChartOfCalculationTypes xmlns:xr="http://v8.1c.ru/8.3/xcf/readable">
+  <Properties>
+    <StandardTabularSections>
+      <xr:StandardTabularSection name="LeadingCalculationTypes"/>
+      <xr:StandardTabularSection name="DisplacingCalculationTypes"/>
+      <xr:StandardTabularSection name="BaseCalculationTypes"/>
+    </StandardTabularSections>
+  </Properties>
+</ChartOfCalculationTypes>"""
+        )
+
+        prop = extract_property(root, "СтандартныеТабличныеЧасти", SETTINGS)
+
+        self.assertEqual(
+            prop,
+            ReportProperty(
+                "СтандартныеТабличныеЧасти",
+                [
+                    ("ВедущиеВидыРасчета", []),
+                    ("ВытесняющиеВидыРасчета", []),
+                    ("БазовыеВидыРасчета", []),
+                ],
+                "named_object_list",
+            ),
+        )
+
+    def test_empty_full_text_search_dictionaries_are_written_as_empty_list(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(
+            """<Configuration>
+  <Properties>
+    <AdditionalFullTextSearchDictionaries/>
+  </Properties>
+</Configuration>"""
+        )
+
+        prop = extract_property(root, "ДополнительныеСловариПолнотекстовогоПоиска", SETTINGS)
+
+        self.assertEqual(prop, ReportProperty("ДополнительныеСловариПолнотекстовогоПоиска", [], "list"))
+
+    def test_comment_preserves_trailing_spaces(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(
+            """<Attribute>
+  <Properties>
+    <Comment>АПК:58 </Comment>
+  </Properties>
+</Attribute>"""
+        )
+
+        prop = extract_property(root, "Комментарий", SETTINGS)
+
+        self.assertEqual(prop, ReportProperty("Комментарий", "АПК:58 "))
+
+    def test_mobile_application_functionalities_use_reference_multiline_format(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(
+            """<Configuration xmlns:app="http://v8.1c.ru/8.2/managed-application/core">
+  <Properties>
+    <UsedMobileApplicationFunctionalities>
+      <app:functionality>
+        <app:functionality>Biometrics</app:functionality>
+        <app:use>true</app:use>
+      </app:functionality>
+      <app:functionality>
+        <app:functionality>Location</app:functionality>
+        <app:use>false</app:use>
+      </app:functionality>
+    </UsedMobileApplicationFunctionalities>
+  </Properties>
+</Configuration>"""
+        )
+
+        prop = extract_property(root, "ИспользуемаяФункциональностьМобильногоПриложения", SETTINGS)
+
+        self.assertEqual(
+            prop,
+            ReportProperty(
+                "ИспользуемаяФункциональностьМобильногоПриложения",
+                "Функциональность:\nБиометрия = Истина\nГеопозиционирование = Ложь",
+            ),
+        )
+
+    def test_recent_reference_value_translations_are_applied(self) -> None:
+        configure_extractor(SETTINGS)
+
+        self.assertEqual(format_value("AutoDelete"), "УдалятьАвтоматически")
+        self.assertEqual(format_value("FromForm"), "ИзФормы")
+        self.assertEqual(format_value("DocumentNumerator.ПерсонифицированныйУчет"), "НумераторДокументов.ПерсонифицированныйУчет")
+
+    def test_task_number_auto_prefix_uses_reference_property_name(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(
+            """<Task>
+  <Properties>
+    <TaskNumberAutoPrefix>BusinessProcessNumber</TaskNumberAutoPrefix>
+  </Properties>
+</Task>"""
+        )
+
+        prop = extract_property(root, "АвтоПрефиксНомераЗадачи", SETTINGS)
+
+        self.assertEqual(prop, ReportProperty("АвтоПрефиксНомераЗадачи", "НомерБизнесПроцесса"))
+
+    def test_business_process_head_task_keeps_empty_fill_value_as_leading_task(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(
+            """<BusinessProcess xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Properties>
+    <StandardAttributes>
+      <xr:StandardAttribute name="HeadTask">
+        <xr:FillValue xsi:type="xr:DesignTimeRef">Task.ЗадачаИсполнителя.EmptyRef</xr:FillValue>
+      </xr:StandardAttribute>
+    </StandardAttributes>
+  </Properties>
+</BusinessProcess>"""
+        )
+
+        prop = extract_property(root, "СтандартныеРеквизиты", SETTINGS)
+
+        self.assertEqual(
+            prop,
+            ReportProperty("СтандартныеРеквизиты", [("ВедущаяЗадача", [ReportProperty("ЗначениеЗаполнения", "")])], "named_object_list"),
+        )
+
+    def test_calculation_register_properties_use_report_names_and_suppress_standard_attribute_noise(self) -> None:
+        configure_extractor(SETTINGS)
+        root = ET.fromstring(
+            """<CalculationRegister xmlns:xr="http://v8.1c.ru/8.3/xcf/readable">
+  <Properties>
+    <Periodicity>Month</Periodicity>
+    <ActionPeriod>true</ActionPeriod>
+    <BasePeriod>true</BasePeriod>
+    <Schedule>InformationRegister.Графики</Schedule>
+    <ScheduleValue>InformationRegister.Графики.Resource.Значение</ScheduleValue>
+    <ScheduleDate>InformationRegister.Графики.Dimension.Дата</ScheduleDate>
+    <ScheduleLink/>
+    <ChartOfCalculationTypes>ChartOfCalculationTypes.Начисления</ChartOfCalculationTypes>
+    <StandardAttributes>
+      <xr:StandardAttribute name="RegistrationPeriod">
+        <xr:FillChecking>ShowError</xr:FillChecking>
+      </xr:StandardAttribute>
+      <xr:StandardAttribute name="CalculationType">
+        <xr:FillChecking>ShowError</xr:FillChecking>
+      </xr:StandardAttribute>
+    </StandardAttributes>
+  </Properties>
+</CalculationRegister>"""
+        )
+
+        props = extract_properties(
+            root,
+            (
+                "Периодичность",
+                "ПериодДействия",
+                "БазовыйПериод",
+                "График",
+                "ЗначениеГрафика",
+                "ДатаГрафика",
+                "СвязьСГрафиком",
+                "ПланВидовРасчета",
+                "СтандартныеРеквизиты",
+            ),
+            Diagnostics("test"),
+            SETTINGS,
+            include_extra_properties=False,
+            owner_type_key="calculation_register",
+        )
+
+        self.assertEqual(
+            props,
+            [
+                ReportProperty("Периодичность", "Месяц"),
+                ReportProperty("ПериодДействия", "Истина"),
+                ReportProperty("БазовыйПериод", "Истина"),
+                ReportProperty("График", "РегистрСведений.Графики"),
+                ReportProperty("ЗначениеГрафика", "РегистрСведений.Графики.Ресурс.Значение"),
+                ReportProperty("ДатаГрафика", "РегистрСведений.Графики.Измерение.Дата"),
+                ReportProperty("СвязьСГрафиком", ""),
+                ReportProperty("ПланВидовРасчета", "ПланВидовРасчета.Начисления"),
+                ReportProperty("СтандартныеРеквизиты", "", "marker"),
+            ],
+        )
 
     def test_fixed_string_whitespace_fill_value_is_empty(self) -> None:
         configure_extractor(SETTINGS)

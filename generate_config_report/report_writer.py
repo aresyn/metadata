@@ -97,6 +97,9 @@ class ReportWriter:
         stream.write(f"{prefix}{first}{self.format_settings.line_ending}")
         for index, line in enumerate(rest):
             suffix = '"' if index == len(rest) - 1 else ""
+            if line == "":
+                stream.write(f"{suffix}{self.format_settings.line_ending}")
+                continue
             continuation = line if line[:1].isspace() else continuation_padding + line
             stream.write(f"{indent}{continuation}{suffix}{self.format_settings.line_ending}")
 

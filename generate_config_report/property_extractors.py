@@ -161,6 +161,12 @@ def _special_property(
     owner_type_key: str | None = None,
 ) -> ReportProperty | None:
     node_name = local_name(node.tag)
+    if node_name == "StandardTabularSections":
+        if output_name == translate_value("StandardTabularSections"):
+            groups = _standard_tabular_sections(node, settings)
+            if not groups:
+                return ReportProperty(output_name, "", "marker")
+            return ReportProperty(output_name, groups, "named_object_list")
     if node_name == "StandardAttributes":
         groups = _standard_attributes(
             node,
@@ -264,6 +270,8 @@ def _translate_property_value(output_name: str, value: str, settings: GeneratorS
 
 def simple_value(node: ET.Element) -> str | list[str] | None:
     name = local_name(node.tag)
+    if name == "Comment":
+        return _comment_value(node.text)
     if name == "Type":
         return _type_values(node)
     if name in {"XDTOReturningValueType", "XDTOValueType"}:
@@ -278,6 +286,8 @@ def simple_value(node: ET.Element) -> str | list[str] | None:
         return _content_values(node)
     if name == "InputByString":
         return _input_by_string_values(node)
+    if name == "UsedMobileApplicationFunctionalities":
+        return _mobile_application_functionalities(node)
     if name in {"XDTOPackages", "RegisteredDocuments", "Source", "BasedOn", "References", "DataLockFields"}:
         return _metadata_reference_values(node)
     if name == "Picture":
@@ -287,6 +297,8 @@ def simple_value(node: ET.Element) -> str | list[str] | None:
     if name == "FillValue":
         return _fill_value(node)
     if name == "StandardAttributes":
+        return []
+    if name == "StandardTabularSections":
         return []
 
     children = [child for child in list(node) if _has_content(child)]
@@ -659,6 +671,19 @@ def _content_values(node: ET.Element) -> list[str]:
     return _deduplicate(result)
 
 
+def _mobile_application_functionalities(node: ET.Element) -> str:
+    values: list[str] = []
+    for item in list(node):
+        functionality = _child_text(item, "functionality")
+        use = _child_text(item, "use")
+        if functionality is None or use is None:
+            continue
+        values.append(f"{translate_value(functionality)} = {format_value(use)}")
+    if not values:
+        return ""
+    return f"{translate_value('Functionality')}:\n" + "\n".join(values)
+
+
 def _first_descendant_value(node: ET.Element, names: set[str]) -> str | None:
     for child in node.iter():
         if child is node:
@@ -741,7 +766,7 @@ def _format_fill_number(value: str) -> str:
 
 
 def _format_fill_reference(value: str) -> str:
-    if value.endswith(".EmptyRef"):
+    if _is_empty_design_time_ref(value):
         return ""
     parts = value.split(".")
     if len(parts) >= 4 and parts[-2] == "EnumValue":
@@ -757,11 +782,18 @@ def _format_fill_reference(value: str) -> str:
 
 def _format_design_time_ref(value: str) -> str:
     parts = value.split(".")
-    if len(parts) >= 3 and parts[-1] == "EmptyRef":
+    if len(parts) >= 3 and _is_empty_design_time_ref(value):
         prefix = translate_value(f"{parts[0]}Ref")
         if prefix != f"{parts[0]}Ref":
             return f"{prefix}.{parts[1]}:"
     return _format_fill_reference(value)
+
+
+def _is_empty_design_time_ref(value: str) -> bool:
+    if value.endswith(".EmptyRef"):
+        return True
+    last_part = value.rsplit(".", 1)[-1]
+    return last_part == "00000000-0000-0000-0000-000000000000"
 
 
 def _standard_attributes(
@@ -828,6 +860,21 @@ def _standard_attributes(
                 items.append(ReportProperty(output_name, converted, "scalar"))
         if items and (forced_items_present or not _is_noisy_standard_attribute(translated_name, items, settings)):
             groups.append((translated_name, items))
+    return groups
+
+
+def _standard_tabular_sections(
+    node: ET.Element,
+    settings: GeneratorSettings,
+) -> list[tuple[str, list[ReportProperty]]]:
+    groups: list[tuple[str, list[ReportProperty]]] = []
+    for standard_section in list(node):
+        if local_name(standard_section.tag) != "StandardTabularSection":
+            continue
+        raw_name = _attribute_value(standard_section, ("name", "Name"))
+        if not raw_name:
+            continue
+        groups.append((_standard_attribute_name(raw_name, settings), []))
     return groups
 
 
@@ -973,6 +1020,13 @@ def _clean_text(value: str | None) -> str | None:
         return None
     stripped = value.strip()
     return stripped if stripped else None
+
+
+def _comment_value(value: str | None) -> str:
+    if value is None:
+        return ""
+    normalized = value.strip("\r\n\t")
+    return translate_value(normalized) if normalized else ""
 
 
 def _clean_localized_text(value: str | None) -> str | None:

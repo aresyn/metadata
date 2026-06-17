@@ -191,13 +191,13 @@ def _catalog_signature(properties: ET.Element) -> dict[str, str | int | bool | N
 
 
 def _should_keep_empty_owner(name: str, catalog: dict[str, str | int | bool | None]) -> bool:
-    if catalog["hierarchical"] or not _uses_subordination(_text_value(catalog["subordination_use"])):
+    if not _uses_subordination(_text_value(catalog["subordination_use"])):
         return False
     if _is_attached_file_catalog(name, catalog):
         return True
     if _is_files_root_catalog(name, catalog):
         return True
-    if _is_owner_account_catalog(name, catalog):
+    if _has_explicit_owners(catalog):
         return True
     return False
 
@@ -214,10 +214,8 @@ def _is_attached_file_catalog(name: str, catalog: dict[str, str | int | bool | N
         and _text_value(catalog["use_standard_commands"]) == "false"
         and _text_value(catalog["code_length"]) == "0"
         and _text_value(catalog["description_length"]) == "150"
-        and _text_value(catalog["create_on_input"]) == "DontUse"
         and _bool_value(catalog["has_input_by_string"])
         and _int_value(catalog["owners_count"]) == 0
-        and not _bool_value(catalog["has_comment"])
     )
 
 
@@ -231,13 +229,8 @@ def _is_files_root_catalog(name: str, catalog: dict[str, str | int | bool | None
     )
 
 
-def _is_owner_account_catalog(name: str, catalog: dict[str, str | int | bool | None]) -> bool:
-    return (
-        name.startswith("УчетныеЗаписи")
-        and _text_value(catalog["code_length"]) == "0"
-        and _text_value(catalog["description_length"]) == "100"
-        and _int_value(catalog["owners_count"]) == 1
-    )
+def _has_explicit_owners(catalog: dict[str, str | int | bool | None]) -> bool:
+    return _int_value(catalog["owners_count"]) > 0
 
 
 def _is_extension_hierarchy_catalog(name: str, catalog: dict[str, str | int | bool | None]) -> bool:
@@ -330,8 +323,15 @@ def _standard_attribute_has_empty_fill(standard_attributes: ET.Element, name: st
             return True
         if fill_value.text is None:
             return True
-        return fill_value.text.strip().endswith(".EmptyRef")
+        return _is_empty_fill_value(fill_value.text.strip())
     return False
+
+
+def _is_empty_fill_value(value: str) -> bool:
+    if value.endswith(".EmptyRef"):
+        return True
+    last_part = value.rsplit(".", 1)[-1]
+    return last_part == "00000000-0000-0000-0000-000000000000"
 
 
 def _standard_attribute_has_fill_checking(standard_attributes: ET.Element, name: str, expected: str) -> bool:
